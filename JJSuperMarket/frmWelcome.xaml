@@ -1,0 +1,53 @@
+﻿<UserControl x:Class="JJSuperMarket.frmWelcome"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:JJSuperMarket"
+              xmlns:chartingToolkit="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
+  xmlns:materialdesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             Loaded="UserControl_Loaded"
+             xmlns:ctrl ="clr-namespace:JJSuperMarket"
+             d:DesignHeight="700" d:DesignWidth="1200" >
+
+    <Grid  >
+        <Grid.ColumnDefinitions >
+            <ColumnDefinition Width ="auto" />
+
+
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <GroupBox Margin="24,9,826,391" Width="350" Height="300" FontWeight="Bold"  Header="Datewise Monthly Sales Report">
+            <Grid>
+               <DataGrid Name="SalesGrid" />
+            </Grid>
+        </GroupBox>
+        <GroupBox Margin="422,9,428,391" Width="350" Height="300" Foreground="Gray" FontWeight="Bold" Header="ItemWise Sales Report">
+            <DataGrid Name="StockGrid"/>
+        </GroupBox>
+
+        <GroupBox Margin="824,9,26,391" Width="350" FontWeight="Bold" Height="300" Foreground="Gray" Header="StockReport">
+            <DataGrid Name="StockReportGrid"/>
+        </GroupBox>
+        <GroupBox Margin="24,329,826,71" Width="350" Height="300" FontWeight="Bold" Header="salesChart">
+            <chartingToolkit:Chart  Name="BarChart1" Title="Sales Report" >
+                <chartingToolkit:PieSeries   DependentValuePath="Value"
+            IndependentValuePath="Key" ItemsSource="{Binding}"
+            IsSelectionEnabled="True" />
+            </chartingToolkit:Chart>
+        </GroupBox>
+        <GroupBox Margin="422,329,428,71" Width="350" Height="300" FontWeight="Bold" Header="Stock Chart">
+            <chartingToolkit:Chart  Name="BarChart" Title="Stock Report" >
+                <chartingToolkit:PieSeries   DependentValuePath="Value"
+            IndependentValuePath="Key" ItemsSource="{Binding}"
+            IsSelectionEnabled="True" />
+            </chartingToolkit:Chart>
+        </GroupBox>
+        <GroupBox Margin="824,329,26,71" Width="350" Height="300" FontWeight="Bold" Header="ReOrderLevel">
+            <DataGrid Name="ReOrderLevelGrid"></DataGrid>
+        </GroupBox>
+    </Grid>
+</UserControl>
