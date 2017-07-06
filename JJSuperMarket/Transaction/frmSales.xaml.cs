@@ -110,7 +110,7 @@ namespace JJSuperMarket.Transaction
                     cmbMobileNumber.Focus();
                     await DialogHost.Show(Information, "RootDialog");
                 }
-                else if (txtPaidAmount.Text == "" || txtPaidAmount.Text == "0.00" && cmbSalesType.SelectedIndex != 1)
+                else if (txtPaidAmount.Text == "" || txtPaidAmount.Text == "0.00" )
                 {
                     var Information = new SampleMessageDialog
                     {
@@ -128,7 +128,7 @@ namespace JJSuperMarket.Transaction
                     txtPaidAmount.Focus();
                     await DialogHost.Show(Information, "RootDialog");
                 }
-                else if (paid < tot && cmbSalesType.SelectedIndex != 1)
+                else if (paid < tot && cmbSalesType.SelectedIndex!=1 )
                 {
 
                     var Information = new SampleMessageDialog
@@ -141,7 +141,7 @@ namespace JJSuperMarket.Transaction
 
                 }
                 else {
-                    txtPaidAmount.Text = cmbSalesType.SelectedIndex == 1 ? "0.00" : txtPaidAmount.Text;
+                    
                     if (ID == 0)
                 {
                     db.Sales.Add(p);
@@ -164,6 +164,23 @@ namespace JJSuperMarket.Transaction
                 p.Narration = txtPaidAmount.Text;
                 var sods = p.SalesDetails.ToList();
 
+                    if (cmbSalesType.SelectedIndex == 1)
+                    {
+                        if (ID == 0)
+                        {
+                            ReceiptMaster r = new ReceiptMaster();
+                            r.ReceiptDate = dtpS.SelectedDate.Value;
+                            r.SalesId = Convert.ToDecimal(txtInNo.Text.ToString());
+                            r.CustomerId= db.Customers.Where(x => x.CustomerName == cmbCustomer.Text).Select(x => x.CustomerId).FirstOrDefault();
+                            r.PurchaseRId = 0;
+                            r.SupplierId = 0;
+                            r.ReceiptMode = "Cash";
+                            r.ReceiptAmount = Convert.ToDecimal(txtPaidAmount.Text);
+                            r.Description = "For INV " + txtInNo.Text+"From Sale";
+                            db.ReceiptMasters.Add(r);
+                            db.SaveChanges();
+                        }
+                    }
                 foreach (var data in sods)
                 {
                     var sod = lstSalesDetails.Where(x => x.SDId == data.SDId).FirstOrDefault();
@@ -977,7 +994,7 @@ namespace JJSuperMarket.Transaction
             Center,
             Right
         }
-        int PrintNoOfCharPerLine = 27;
+        int PrintNoOfCharPerLine = 40;//27
         String PrintLine(string Text, PrintTextAlignType AlignType)
         {            
 
@@ -1029,55 +1046,60 @@ namespace JJSuperMarket.Transaction
                 {
                     System.Drawing.Printing.PrintDocument prnPurchaseOrder = new System.Drawing.Printing.PrintDocument();
                     prnPurchaseOrder.PrintPage += PrnPurchaseOrder_PrintPage;
-
-                    prnPurchaseOrder.DefaultPageSettings.PrinterSettings.PrinterName = @"POS-58-1"; //Microsoft Print to PDF   POS-58-1
+                    var c = db.CompanyDetails.FirstOrDefault();
+                    prnPurchaseOrder.DefaultPageSettings.PrinterSettings.PrinterName = c.PhNo==""? "Microsoft XPS Document Writer":c.PhNo ;  
                     prnPurchaseOrder.PrintController = new System.Drawing.Printing.StandardPrintController();
-                     var c = db.CompanyDetails.FirstOrDefault();
+                     
 
                     // adds.Split()
+                    TextBlock txt = new TextBlock();
+                    txt.Text = PrintLine(c.CompanyName, PrintTextAlignType.Center);
+                    txt.FontWeight = FontWeights.UltraBold ;
                     TextToPrint = PrintLine(c.CompanyName, PrintTextAlignType.Center);
-                    TextToPrint += PrintLine(c.Address1, PrintTextAlignType.Center);
-                    TextToPrint += PrintLine(c.Address2, PrintTextAlignType.Center);
-                    TextToPrint += PrintLine(c.Address3, PrintTextAlignType.Center);
+                    //TextToPrint += PrintLine(c.Address1, PrintTextAlignType.Center);
+                    // TextToPrint += PrintLine(c.Address2, PrintTextAlignType.Center);
+                    //  TextToPrint += PrintLine(c.Address3, PrintTextAlignType.Center);
                     TextToPrint += PrintLine(c.Address4, PrintTextAlignType.Center);
                     //TextToPrint += PrintLine("Ambattur, Kalikuppam", PrintTextAlignType.Center);
                     TextToPrint += PrintLine(c.Pincode, PrintTextAlignType.Center);
-                    TextToPrint += PrintLine(string.Format("Mob No:{0}", c.MobileNo), PrintTextAlignType.Center);
-
-                    TextToPrint += PrintLine(string.Format("Member Name:{0}", cmbCustomer.Text), PrintTextAlignType.Left);
-                    TextToPrint += PrintLine(string.Format("Member Mob No:{0}", cmbMobileNumber.Text), PrintTextAlignType.Left);
-                    TextToPrint += PrintLine(string.Format("Your Points :{0}", lblPoint.Content), PrintTextAlignType.Left);
-
-                    TextToPrint += PrintLine(string.Format("{0}CASH BILL{0}", new string('-', 8)), PrintTextAlignType.Center);
-
-                    TextToPrint += PrintLine(string.Format("Dt: {0:dd/MM/yyyy hh:mm tt}", DateTime.Now), PrintTextAlignType.Left);
-                    TextToPrint += PrintLine(string.Format("Bill No: {0}", txtInNo.Text), PrintTextAlignType.Left);
-                    TextToPrint += PrintLine(string.Format("Tin No:{0}", c.Tin), PrintTextAlignType.Left);
+                    TextToPrint += PrintLine(string.Format("Mob No:{0},Tin No:{1}", c.MobileNo, c.Tin), PrintTextAlignType.Center);
+                   // TextToPrint += PrintLine(string.Format("Tin No:{0}", c.Tin), PrintTextAlignType.Center);
 
                     TextToPrint += PrintLine(string.Format("{0}", new string('-', PrintNoOfCharPerLine)), PrintTextAlignType.Center);
-                    TextToPrint += PrintLine(string.Format("{0,3} {1,-11} {2,10}", "SNo", "Particulars", "Amount"), PrintTextAlignType.Left);
+                    TextToPrint += PrintLine(string.Format("Member Name  :{0},", cmbCustomer.Text), PrintTextAlignType.Left);
+                    TextToPrint += PrintLine(string.Format("Member Mob No:{0},", cmbMobileNumber.Text), PrintTextAlignType.Left);
+                    TextToPrint += PrintLine(string.Format("Your Points  :{0}.", lblPoint.Content), PrintTextAlignType.Left);
+
+                    TextToPrint += PrintLine(string.Format("{0}CASH BILL{0}", new string('-', 15)), PrintTextAlignType.Center);
+
+                    TextToPrint += PrintLine(string.Format("Date :{0:dd/MM/yyyy , hh:mm tt,}", DateTime.Now), PrintTextAlignType.Left);
+                    TextToPrint += PrintLine(string.Format("Bill No:{0}", txtInNo.Text), PrintTextAlignType.Left);
+                    
+
+                    TextToPrint += PrintLine(string.Format("{0}", new string('-', PrintNoOfCharPerLine)), PrintTextAlignType.Center);
+                    TextToPrint += PrintLine(string.Format("{0,3} {1,14} {2,20}", "SNo", "Particulars", "Amount"), PrintTextAlignType.Left);
                     TextToPrint += PrintLine(string.Format("{0}", new string('-', PrintNoOfCharPerLine)), PrintTextAlignType.Center);
 
                     int sno = 0;
 
                     foreach (var data in lstSalesDetails)
                     {
-                        TextToPrint += PrintLine(string.Format("{0,3} {1,-11} ", ++sno+") ", data.ProductName.Length>20?data.ProductName.Substring(0,20):data.ProductName), PrintTextAlignType.Left);
-                        TextToPrint += PrintLine(string.Format("{0}"," MRP:"+data.Rate ), PrintTextAlignType.Left);
-                      //TextToPrint += PrintLine(string.Format("{0} [Rs. {1} x {2} {3}] {4,8:0.00} ", "", data.Rate, data.Quantity, data.UOMSymbol, data.Rate * data.Quantity), PrintTextAlignType.Left);
-                        TextToPrint += PrintLine(string.Format("{0}[Rate.{1} x {2} {3}] {4,7:0.00}","",data.DisPer, data.Quantity, data.UOMSymbol, (data.DisPer * data.Quantity)), PrintTextAlignType.Right);
+                        TextToPrint += PrintLine(string.Format("{0,3} {1,-10} ", ++sno+") ", data.ProductName), PrintTextAlignType.Left);
+                        // TextToPrint += PrintLine(string.Format("{0}"," MRP:"+data.Rate ), PrintTextAlignType.Left); //Data SubString{data.ProductName.Length>20?data.ProductName.Substring(0,20):}
+                        //TextToPrint += PrintLine(string.Format("{0} [Rs. {1} x {2} {3}] {4,8:0.00} ", "", data.Rate, data.Quantity, data.UOMSymbol, data.Rate * data.Quantity), PrintTextAlignType.Left);
+                        TextToPrint += PrintLine(string.Format("MRP:{0:N2}{1}[Rate:{2:N2} x {3} {4}] {5,7:0.00}",  data.Rate, "",data.DisPer, data.Quantity, data.UOMSymbol, (data.DisPer * data.Quantity)), PrintTextAlignType.Right);
                     }
                      
                     TextToPrint += PrintLine(string.Format("{0}", new string('-', PrintNoOfCharPerLine)), PrintTextAlignType.Center);
-                    TextToPrint += PrintLine(string.Format("Total   : {0,10:0.00}", Convert.ToDouble(txtTotItemAmount.Text)), PrintTextAlignType.Right);
-                    TextToPrint += PrintLine(string.Format("Your Savings: {0,10:0.00}", lstSalesDetails.Sum(x => x.Saveing)), PrintTextAlignType.Right);
+                    TextToPrint += PrintLine(string.Format("Total : {0,10:0.00}", Convert.ToDouble(txtTotItemAmount.Text)), PrintTextAlignType.Right);
+                    TextToPrint += PrintLine(string.Format("Your Savings : {0,10:0.00}", lstSalesDetails.Sum(x => x.Saveing)), PrintTextAlignType.Right);
                     TextToPrint += PrintLine("", PrintTextAlignType.Left);
-                    TextToPrint += PrintLine(string.Format("Bill Amount : RS.{0:0.00}", txtRound.Text == "" ? 0 : Convert.ToDouble(txtRound.Text.ToString())), PrintTextAlignType.Right);
-                    TextToPrint += PrintLine(string.Format("Received Amount :RS.{0:0.00}", txtPaidAmount.Text == "" ? 0 : Convert.ToDouble(txtPaidAmount.Text)), PrintTextAlignType.Right);
-                    TextToPrint += PrintLine(string.Format("Balance Amount  :RS.{0:0.00}", txtBalAmount.Text == "" ? 0 : Convert.ToDouble(txtBalAmount.Text)), PrintTextAlignType.Right);
+                    TextToPrint += PrintLine(string.Format("    Bill Amount :RS.{0,7:0.00}", txtRound.Text == "" ? 0 :Convert.ToDouble(txtRound.Text)  ), PrintTextAlignType.Right);
+                    TextToPrint += PrintLine(string.Format("Received Amount :RS.{0,7:0.00}", txtPaidAmount.Text == "" ? 0 : Convert.ToDouble(txtPaidAmount.Text)), PrintTextAlignType.Right);
+                    TextToPrint += PrintLine(string.Format(" Balance Amount :RS.{0,7:0.00}", txtBalAmount.Text == "" ? 0 : Convert.ToDouble(txtBalAmount.Text)), PrintTextAlignType.Right);
                     TextToPrint += PrintLine("", PrintTextAlignType.Left);
-                    TextToPrint += PrintLine("", PrintTextAlignType.Left);
-                    TextToPrint += PrintLine("**Thank You! Visit Again**", PrintTextAlignType.Center);
+                   
+                    TextToPrint += PrintLine("*** Thank You! Visit Again ***", PrintTextAlignType.Center);
                     TextToPrint += PrintLine("", PrintTextAlignType.Left);
 
 
@@ -1159,7 +1181,7 @@ namespace JJSuperMarket.Transaction
         {
             if (cmbSalesType.SelectedIndex == 1)
             {
-                txtPaidAmount.Text = "0.00";
+               txtPaidAmount.Text = "0.00";
             }
            
         }

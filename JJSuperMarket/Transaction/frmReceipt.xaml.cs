@@ -35,6 +35,7 @@ namespace JJSuperMarket.Transaction
         string TextToPrint = "";
         decimal PayToC = 0;
         decimal PayToS = 0;
+        decimal GivenAmount;
         public frmReceipt()
         {
             InitializeComponent();
@@ -62,6 +63,7 @@ namespace JJSuperMarket.Transaction
             {
                 if (rbtCustomerMaster.IsChecked == true)
                 {
+
                     var Cus = cmbNameDr.SelectedItem as Customer;
                     List<CustomerDueReportN> Cuslist = new List<CustomerDueReportN>();
 
@@ -226,7 +228,7 @@ namespace JJSuperMarket.Transaction
                 decimal fkys = 0;
                 var cus = cmbNameDr.SelectedItem as Customer;
                 var sup = cmbNameDr.SelectedItem as Supplier;
-
+                decimal PaidAmount = txtAmount.Text == "" ? 0 : Convert.ToDecimal(txtAmount.Text);
                 if (rbtCustomerMaster.IsChecked == true)
                 {
 
@@ -238,6 +240,19 @@ namespace JJSuperMarket.Transaction
                     else if (PayToC == 0)
                     {
                         MessageBox.Show("Select Invoice"); acc = false;
+                    }
+                    else if (txtAmount.Text == "")
+                    {
+
+                        MessageBox.Show("Enter Amount");
+                        txtAmount.Focus();
+                        acc = false;
+                    }
+                    else if (PaidAmount > GivenAmount)
+                    {
+                        MessageBox.Show("Amount Mismatch", "Alert");
+                        acc = false;
+                        txtAmount.Focus();
                     }
                     fkyc = cus.CustomerId;
                 }
@@ -253,15 +268,23 @@ namespace JJSuperMarket.Transaction
                     {
                         MessageBox.Show("Select Invoice"); acc = false;
                     }
+                    else if (txtAmount.Text == "")
+                    {
+
+                        MessageBox.Show("Enter Amount");
+                        txtAmount.Focus();
+                        acc = false;
+                    }
+                    else if (PaidAmount > GivenAmount)
+                    {
+                        MessageBox.Show("Amount Mismatch", "Alert");
+                        acc = false;
+                        txtAmount.Focus();
+                    }
                     fkys = sup.SupplierId;
                 }
 
-                else if (txtAmount.Text == "")
-                {
-
-                    MessageBox.Show("Enter Amount");
-                    txtAmount.Focus();
-                }
+               
 
                 if (acc == true)
                 {
@@ -439,6 +462,7 @@ namespace JJSuperMarket.Transaction
             // cmbCompanySr.Text = "";
             cmbCompanySrch.Text = "";
             ID = 0;
+            GivenAmount = 0;
         }
 
         //private void LoadReport(string Payment)
@@ -527,6 +551,8 @@ namespace JJSuperMarket.Transaction
             if (rbtCustomerMaster.IsChecked == true)
             {
                 var v = db.Customers.ToList();
+                var d = db.Sales.Where(x => x.SalesType == "Credit").Select(x => x.Customer.CustomerName).ToList();
+                
                 cmbNameDr.ItemsSource = v;
                 cmbNameDr.DisplayMemberPath = "CustomerName";
                 cmbNameDr.SelectedValuePath = "CustomerId";
@@ -535,6 +561,8 @@ namespace JJSuperMarket.Transaction
             else if (rbtSupplierMaster.IsChecked == true)
             {
                 var v = db.Suppliers.ToList();
+                var d = db.PurchaseReturns.Where(x => x.PRType == "Credit").Select(x => x.Supplier.SupplierName).ToList();
+               
                 cmbNameDr.ItemsSource = v;
                 cmbNameDr.DisplayMemberPath = "SupplierName";
                 cmbNameDr.SelectedValuePath = "SupplierId";
@@ -554,6 +582,7 @@ namespace JJSuperMarket.Transaction
                     PayToS = 0;
                     PayToC = decimal.Parse(pData.SInvoiceNo.Substring(4));
                     txtNarration.Text = "For " + pData.SInvoiceNo;
+                    GivenAmount = pData.Balance;
                 }
             }
             else if (rbtSupplierMaster.IsChecked == true)
@@ -564,6 +593,7 @@ namespace JJSuperMarket.Transaction
                     PayToC = 0;
                     PayToS = decimal.Parse(pData.PRInvoiceNo.Substring(6));
                     txtNarration.Text = "For " + pData.PRInvoiceNo;
+                    GivenAmount = pData.Balance;
                 }
             }
 
@@ -653,6 +683,10 @@ namespace JJSuperMarket.Transaction
             LoadWindow();
         }
 
+        private void UserControl_Loaded_1(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
     class CustomerDueReportN
     {

@@ -101,7 +101,7 @@
                 <!--#region Buttons-->
                 <Grid Grid.Row="2" Margin="0,1"  >
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Height="51" Margin="176,22,176,12">
-                        <Button Width="80" Height="30" x:Name="btnSave" Content="SAVE"  Margin="5 5" Click="btnSave_Click" />
+                        <Button Width="80" Height="30" x:Name="btnSave" Content="SAVE"  Margin="5,10,5,0" Click="btnSave_Click" VerticalAlignment="Top" />
                         <Button Width="80" Height="30" x:Name="btnDelete" Content="DELETE"   Margin="5 5" Click="btnDelete_Click" />
                         <Button Width="80" Height="30" x:Name="btnClear" Content="CLEAR" Margin="5 5" Click="btnClear_Click" />
                         <Button Width="80" Visibility="Collapsed" Height="30" x:Name="btnView" Content="VIEW"  Margin="5 5" Click="btnView_Click"/>
@@ -250,7 +250,7 @@
                                 <VirtualizingStackPanel VirtualizingPanel.VirtualizationMode="Recycling" Height="250"/>
                             </ItemsPanelTemplate>
                         </ComboBox.ItemsPanel>
-                            
+
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">

@@ -55,7 +55,7 @@ namespace JJSuperMarket.Master
             
             txtMobileNo.Text = v.MobileNo;
             txtTINNo.Text = v.Tin;
-            txtPhoneNo.Text = v.PhNo;
+            txtPrinterName.Text = v.PhNo;
             txtGST.Text = v.Cst;
            // txtMinAmount.Text = v.MinAmount.ToString ();
             //txtMinPersentage.Text = v.Amount.ToString(); 
@@ -129,7 +129,7 @@ namespace JJSuperMarket.Master
                 cmp.Address4 = txtAddress4.Text;
                 cmp.Pincode = txtPinCode.Text;
                 cmp.MobileNo = txtMobileNo.Text;
-                cmp.PhNo = txtPhoneNo.Text;
+                cmp.PhNo = txtPrinterName.Text;
                 cmp.Tin = txtTINNo.Text;
                 cmp.Cst = txtGST.Text;
                 cmp.UserName = txtUserName.Text;
