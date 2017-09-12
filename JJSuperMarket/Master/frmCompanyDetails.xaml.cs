@@ -43,6 +43,7 @@ namespace JJSuperMarket.Master
 
         public void LoadWindow()
         {
+            
             var v = db.CompanyDetails.ToList().FirstOrDefault() ;
             txtCompanyName.Text = v.CompanyName;
             txtAddress.Text = v.Address1;

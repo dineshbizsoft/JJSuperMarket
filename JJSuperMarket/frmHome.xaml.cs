@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using MahApps.Metro.Controls;
 using JJSuperMarket.Domain;
+using JJSuperMarket.Transaction;
 
 namespace JJSuperMarket
 {
@@ -24,10 +25,11 @@ namespace JJSuperMarket
     public partial class frmHome : Window
     {
 
-        
+        bool isShowCloseConform = true;
+
         public frmHome()
         {
-            InitializeComponent();            
+            InitializeComponent();
             ccContent.Content = new frmWelcome();
         }
 
@@ -48,12 +50,37 @@ namespace JJSuperMarket
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            
+
             frmLogin frm = new frmLogin();
             frm.Show();
             this.Close();
         }
 
-      
+        public void ShowForm(object o)
+        {
+            ccContent.Content = o;
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            //if (isShowCloseConform == true)
+            //{
+            //    if (MessageBox.Show(this, "Are you sure to exit?", "Exit Confirmation", MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+            //    {
+            //        e.Cancel = true;
+            //    }
+            //    else
+            //    {
+
+            //        e.Cancel = false;
+            //        frmLogin frm = new frmLogin();
+            //        frm.Show();
+
+            //    }
+            //}
+            frmLogin frm = new frmLogin();
+            frm.Show();
+        }
     }
+
 }

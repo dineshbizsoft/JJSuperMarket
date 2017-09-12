@@ -49,8 +49,8 @@ namespace JJSuperMarket.Reports.Transaction
 
             var v = db.Suppliers.ToList();
             cmbSupplier.ItemsSource = v;
-            cmbSupplier.DisplayMemberPath = "SupplierName";
-            cmbSupplier.SelectedValuePath = "SupplierName";
+            cmbSupplier.DisplayMemberPath = "LedgerName";
+            cmbSupplier.SelectedValuePath = "LedgerName";
             var p = db.Purchases.ToList();
 
             if (dtpFromDate.Text != "")
@@ -77,7 +77,7 @@ namespace JJSuperMarket.Reports.Transaction
             
             if (cmbSupplier.Text != "")
             {
-                p = p.Where(x => x.Supplier.SupplierName == cmbSupplier.Text).ToList();
+                p = p.Where(x => x.Supplier.LedgerName == cmbSupplier.Text).ToList();
             }
 
             dgvDetails.ItemsSource = p;
@@ -92,7 +92,7 @@ namespace JJSuperMarket.Reports.Transaction
                 }
                 else if (cmbSupplier.Text != "")
                 {
-                    var p2 = db.Purchases.Where(x => (x.Supplier == null ? "" : x.Supplier.SupplierName) == cmbSupplier.Text).OrderBy(x => x.PurchaseDate).ToList();
+                    var p2 = db.Purchases.Where(x => (x.Supplier == null ? "" : x.Supplier.LedgerName) == cmbSupplier.Text).OrderBy(x => x.PurchaseDate).ToList();
                     dgvDetails.ItemsSource = p2;
                 }
 
@@ -119,16 +119,12 @@ namespace JJSuperMarket.Reports.Transaction
         {
             try
             {
-
-
                 Purchase p = dgvDetails.SelectedItem as Purchase;
-
                 PID = p.PurchaseId;
                 this.Close();
             }
             catch(Exception ex)
             {
-
             }
         }
 

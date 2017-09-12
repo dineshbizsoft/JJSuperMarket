@@ -26,22 +26,45 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="200"/>
             <RowDefinition Height="200"/>
-            <RowDefinition Height="100*"/>
+            <RowDefinition Height="100"/>
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
         <Grid Grid.Column="1" Grid.Row="0">
             <Image x:Name="image" HorizontalAlignment="Center" Height="150" VerticalAlignment="Center" Width="150" Source="Image/logo Only.png" />
         </Grid>
         <Grid Grid.Column="1" Grid.Row="1">
-            <materialDesign:PackIcon Kind="Account" Height="26" Width="26" Foreground="{DynamicResource PrimaryHueDarkBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="36,29,288,145"  />
-            <TextBlock Text="User Id" Foreground="{DynamicResource PrimaryHueDarkBrush}" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="14.667" FontWeight="Bold" Margin="62,0,229,145" Width="59"/>
-            <TextBox x:Name="txtUserId" Foreground="{DynamicResource PrimaryHueDarkBrush}"  FontSize="14.667" FontWeight="Bold" Margin="138,30,38,140"/>
-            <materialDesign:PackIcon Kind="Key" Height="24" Width="24" Foreground="{DynamicResource PrimaryHueDarkBrush}"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="35,80,291,96"   />
-            <TextBlock Text="Password" Foreground="{DynamicResource PrimaryHueDarkBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14.667" FontWeight="Bold" Margin="62,80,222,100" />
-            <PasswordBox x:Name="txtPassword" Foreground="{DynamicResource PrimaryHueDarkBrush}"  FontSize="14.667" FontWeight="Bold" Margin="138,69,38,96" />
-            <Button x:Name="btnLogin" Content="Login" Foreground="{DynamicResource PrimaryHueLightBrush}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Height="45" FontSize="21.333" FontWeight="Bold" Margin="12,145,0,0" Click="btnLogin_Click" />
-            <Button x:Name="btnClear" Content="Clear" Foreground="{DynamicResource PrimaryHueLightBrush}" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="100" Height="45" FontSize="21.333" FontWeight="Bold" Margin="127,145,0,0" Click="btnClear_Click" />
-            <Button x:Name="btnExit" Content="Exit" Foreground="{DynamicResource PrimaryHueLightBrush}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Height="45" FontSize="21.333" FontWeight="Bold"  Margin="242,145,0,0"  Click="btnExit_Click" />
+            <Grid.RowDefinitions>
+                <RowDefinition Height="55"></RowDefinition>
+                <RowDefinition Height="50"></RowDefinition>
+                <RowDefinition Height="50"></RowDefinition>
+                <RowDefinition Height="50"></RowDefinition>
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal" Grid.Row="0">
+                <materialDesign:PackIcon Margin="5,14,5,11" Kind="Account" Height="26" Width="26" Foreground="{DynamicResource PrimaryHueDarkBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"   />
+                <TextBlock Text="User Type" Margin="5,0,5,11" Foreground="{DynamicResource PrimaryHueDarkBrush}" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="14.667" FontWeight="Bold"  Width="70"/>
+                <ComboBox x:Name="cmbUserType" Margin="5,10,5,11" Foreground="{DynamicResource PrimaryHueDarkBrush}"  FontSize="14.667" FontWeight="Bold" Width="200" Height="34"  >
+                    <ComboBoxItem>Admin</ComboBoxItem>
+                    <ComboBoxItem>User</ComboBoxItem>
+                </ComboBox>
+
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Row="1">
+                <materialDesign:PackIcon Margin="5,20,5,5" Kind="Account" Height="26" Width="26" Foreground="{DynamicResource PrimaryHueDarkBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"   />
+                <TextBlock Text="User Id" Margin="5,0,5,5" Foreground="{DynamicResource PrimaryHueDarkBrush}" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="14.667" FontWeight="Bold"  Width="70"/>
+                <TextBox x:Name="txtUserId" Margin="5" Foreground="{DynamicResource PrimaryHueDarkBrush}"  FontSize="14.667" FontWeight="Bold" Width="200"/>
+
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Row="2">
+                <materialDesign:PackIcon Kind="Key" Height="24" Width="24" Foreground="{DynamicResource PrimaryHueDarkBrush}"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,20,0,5"  />
+                <TextBlock Text="Password" Foreground="{DynamicResource PrimaryHueDarkBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14.667" FontWeight="Bold" Margin="5,25,5,5" Width="75"/>
+                <PasswordBox x:Name="txtPassword" Foreground="{DynamicResource PrimaryHueDarkBrush}"  FontSize="14.667" FontWeight="Bold" Margin="5" Width="200" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Row="3" HorizontalAlignment="Center">
+                <Button x:Name="btnLogin" Content="Login" Foreground="{DynamicResource PrimaryHueLightBrush}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Height="30" FontSize="16" FontWeight="Bold" Margin="10" Click="btnLogin_Click" />
+                <Button x:Name="btnClear" Content="Clear" Foreground="{DynamicResource PrimaryHueLightBrush}" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="80" Height="30" FontSize="16" FontWeight="Bold" Margin="10" Click="btnClear_Click" />
+                <Button x:Name="btnExit" Content="Exit" Foreground="{DynamicResource PrimaryHueLightBrush}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Height="30" FontSize="16" FontWeight="Bold"  Margin="10"  Click="btnExit_Click" />
+
+            </StackPanel>
         </Grid>
         <Grid Grid.Row="3" Grid.ColumnSpan="3"/>
         <Rectangle Fill="{DynamicResource PrimaryHueDarkBrush}" Height="40" Stroke="Black" VerticalAlignment="Top" StrokeThickness="0" Grid.ColumnSpan="3" Grid.Row="3"/>

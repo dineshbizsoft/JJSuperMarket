@@ -42,8 +42,8 @@ namespace JJSuperMarket.Reports.Transaction
             txtBillAmtTo.Text = "99999999";
             var v = db.Suppliers.ToList();
             cmbSupplier.ItemsSource = v;
-            cmbSupplier.DisplayMemberPath = "SupplierName";
-            cmbSupplier.SelectedValuePath = "SupplierName";
+            cmbSupplier.DisplayMemberPath = "LedgerName";
+            cmbSupplier.SelectedValuePath = "LedgerName";
         }
 
         private void LoadReport()
@@ -55,7 +55,7 @@ namespace JJSuperMarket.Reports.Transaction
                 ReportDataSource Data = new ReportDataSource("Purchase", dt);
 
                 PurchaseReport.LocalReport.DataSources.Add(Data);
-                PurchaseReport.LocalReport.ReportEmbeddedResource = "JJSuperMarketReports.Transaction.rptPurchaseReport.rdlc";
+                PurchaseReport.LocalReport.ReportEmbeddedResource = "JJSuperMarket.Reports.Transaction.rptPurchaseReport.rdlc";
                 PurchaseReport.LocalReport.SubreportProcessing += new SubreportProcessingEventHandler(PurchaseDetails);
 
                 PurchaseReport.RefreshReport();
@@ -94,7 +94,7 @@ namespace JJSuperMarket.Reports.Transaction
             using (SqlConnection con = new SqlConnection(AppLib.conStr))
             {
                 SqlCommand cmd;
-                string qry1 = string.Format("select   PO.PurchaseId,s.SupplierName as LedgerCode,PO.PurchaseDate, PO.InvoiceNo,PO.DiscountAmount,PO.Extra,PO.ItemAmount from Purchase as PO left join Supplier as s on PO.LedgerCode = s.SupplierId where {0}", qry);
+                string qry1 = string.Format("select   PO.PurchaseId,s.LedgerName as LedgerCode,PO.PurchaseDate, PO.InvoiceNo,PO.DiscountAmount,PO.Extra,PO.ItemAmount from Purchase as PO left join Supplier as s on PO.LedgerCode = s.SupplierId where {0}", qry);
                 cmd = new SqlCommand(qry1, con);
                 SqlDataAdapter adp = new SqlDataAdapter(cmd);
                 adp.Fill(dt);
@@ -113,7 +113,7 @@ namespace JJSuperMarket.Reports.Transaction
             if (cmbSupplier.Text != "")
             {
 
-                qry = qry + "and S.SupplierName='" + cmbSupplier.Text + "'";
+                qry = qry + "and S.LedgerName='" + cmbSupplier.Text + "'";
 
             }
             if (txtInvoiceNo.Text != "")

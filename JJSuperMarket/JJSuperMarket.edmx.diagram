@@ -81,6 +81,8 @@
         <AssociationConnector Association="JJSuperMarketModel.FK_SalesReturnDetails_UOM" ManuallyRouted="false" />
         <AssociationConnector Association="JJSuperMarketModel.FK_StockGroups_StockGroups" ManuallyRouted="false" />
         <AssociationConnector Association="JJSuperMarketModel.FK_StockReport_UOM" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="JJSuperMarketModel.PurchaseMaster" Width="1.5" PointX="3" PointY="29.25" />
+        <AssociationConnector Association="JJSuperMarketModel.FK_PurchaseMaster_Supplier" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

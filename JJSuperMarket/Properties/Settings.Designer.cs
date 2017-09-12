@@ -26,11 +26,21 @@ namespace JJSuperMarket.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.\\sqlexpresstest;Initial Catalog=JJSuperMarket;Integrated Security=Tr" +
-            "ue")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.\\sqlexpresstest;Initial Catalog=JJSuperMarket;integrated security=false" +
+            ";user id=sa;password=abc")]
         public string JJSuperMarketConnectionString {
             get {
                 return ((string)(this["JJSuperMarketConnectionString"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.\\sqlexpresstest;Initial Catalog=JJSuperMarket;Integrated Security=True")]
+        public string JJSuperMarketConnectionString1 {
+            get {
+                return ((string)(this["JJSuperMarketConnectionString1"]));
             }
         }
     }

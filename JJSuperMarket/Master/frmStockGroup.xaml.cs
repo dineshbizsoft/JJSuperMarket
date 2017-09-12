@@ -37,13 +37,12 @@ namespace JJSuperMarket.MasterSetup
             LoadReport();
         }
 
-
-
         #region Button Events
         private async void btnSave_Click(object sender, RoutedEventArgs e)
         {
             try
             {
+              
                 if (txtGroupName.Text == "")
                 {
                     var sampleMessageDialog = new SampleMessageDialog
@@ -54,7 +53,7 @@ namespace JJSuperMarket.MasterSetup
                     await DialogHost.Show(sampleMessageDialog, "RootDialog");
                     txtGroupName.Focus();
                 }
-                if (cmbGroupName.Text == "")
+                else if (cmbGroupName.Text == "")
                 {
 
                     var sampleMessageDialog = new SampleMessageDialog
@@ -63,59 +62,47 @@ namespace JJSuperMarket.MasterSetup
                     };
 
                     await DialogHost.Show(sampleMessageDialog, "RootDialog");
-                    txtGroupCode.Focus();
+                    cmbGroupName.Focus();
                 }
-
-                else if (ID != 0)
+               
+                if (ID != 0)
                 {
                     bool r = true;
-                    string name = db.StockGroups.Where(x => x.StockGroupId == ID).Select(x => x.GroupName).FirstOrDefault().ToString();
-                    // string name1 = db.StockGroups.Where(x => x.StockGroupId == ID).Select(x => x.GroupCode).FirstOrDefault().ToString();
-                    if (txtGroupName.Text != name)
-
-                    {
+                    //string name = db.StockGroups.Where(x => x.StockGroupId == ID  ).Select(x => x.GroupName).FirstOrDefault().ToString();
+                    //// string name1 = db.StockGroups.Where(x => x.StockGroupId == ID).Select(x => x.GroupCode).FirstOrDefault().ToString();
+                   
                         if (await validation() == false)
                         {
                             r = false;
                         }
-
-                    }
-                    //else if (txtGroupCode.Text != name1)
-                    //{
-                    //    if (await validation() == false)
-                    //    {
-                    //        r = false;
-                    //    }
-                    //}
-                    else if (r == true)
-                    {
-                        StockGroup c = db.StockGroups.Where(x => x.StockGroupId == ID).FirstOrDefault();
-                        c.StockGroupCode = txtGroupCode.Text;
-                        c.GroupName = txtGroupName.Text;
-                        c.Under = (cmbGroupName.Text == null ? 0 : Convert.ToDecimal(cmbGroupName.SelectedValue));
-
-                        db.SaveChanges();
-                        var sampleMessageDialog = new SampleMessageDialog
+                        else if (r == true)
                         {
-                            Message = { Text = "Saved Successfully.." }
-                        };
+                            StockGroup c = db.StockGroups.Where(x => x.StockGroupId == ID).FirstOrDefault();
+                            c.StockGroupCode = "0";
+                            c.GroupName = txtGroupName.Text;
+                            c.Under = (cmbGroupName.Text == null ? 0 : Convert.ToDecimal(cmbGroupName.SelectedValue));
 
-                        await DialogHost.Show(sampleMessageDialog, "RootDialog");
-                        FormClear();
-                        LoadWindow();
-                        LoadReport();
+                            db.SaveChanges();
+                            var sampleMessageDialog = new SampleMessageDialog
+                            {
+                                Message = { Text = "Updated Successfully.." }
+                            };
 
+                            await DialogHost.Show(sampleMessageDialog, "RootDialog");
+                            FormClear();
+                            LoadWindow();
+                            LoadReport();
+
+                        }
                     }
-
-
-                }
+                   
                 else
                 {
 
                     if (await validation() == true)
                     {
                         StockGroup c = new StockGroup();
-                        c.StockGroupCode = txtGroupCode.Text;
+                        c.StockGroupCode ="0";
                         c.GroupName = txtGroupName.Text;
                         c.Under = (cmbGroupName.Text == null ? 0 : Convert.ToDecimal(cmbGroupName.SelectedValue));
 
@@ -180,6 +167,7 @@ namespace JJSuperMarket.MasterSetup
                         await DialogHost.Show(sampleMessageDialog, "RootDialog");
                         FormClear();
                         LoadWindow();
+                        LoadReport();
                     }
                 }
 
@@ -207,7 +195,7 @@ namespace JJSuperMarket.MasterSetup
             {
                 StockGroup c = dgvStock.SelectedItem as StockGroup;
                 ID = c.StockGroupId;
-                txtGroupCode.Text = c.StockGroupCode;
+                
                 txtGroupName.Text = c.GroupName;
                 cmbGroupName.Text = c.StockGroup1.GroupName;
             }
@@ -222,10 +210,10 @@ namespace JJSuperMarket.MasterSetup
         private async Task<bool> validation()
         {
 
-            var b = db.StockGroups.Where(x => x.GroupName == txtGroupName.Text).Count();
+            var b = db.StockGroups.Where(x => x.StockGroupId != ID && x.GroupName.ToLower()==txtGroupName.Text.ToLower());
             //var b1 = db.StockGroups.Where(x => x.GroupName == txtGroupCode.Text).Count();
 
-            if (b != 0)
+            if (b.Count() != 0)
             {
                 var sampleMessageDialog = new SampleMessageDialog
                 {
@@ -256,7 +244,7 @@ namespace JJSuperMarket.MasterSetup
         }
         private void FormClear()
         {
-            txtGroupCode.Clear();
+            
             txtGroupName.Clear();
             cmbGroupName.Text = "";
             ID = 0;
@@ -265,12 +253,12 @@ namespace JJSuperMarket.MasterSetup
         {
             try
             {
-                var c = db.StockGroups.ToList();
+                var c = db.StockGroups.OrderBy(x => x.GroupName).ToList();
                 cmbGroupName.ItemsSource = c;
                 cmbGroupName.SelectedValuePath = "StockGroupId";
                 cmbGroupName.DisplayMemberPath = "GroupName";
 
-                var c1 = db.StockGroups.ToList();
+                var c1 = db.StockGroups.OrderBy(x=>x.GroupName).ToList();
                 cmbGroupNameSrch.ItemsSource = c;
                 cmbGroupNameSrch.SelectedValuePath = "GroupName";
                 cmbGroupNameSrch.DisplayMemberPath = "GroupName";
@@ -281,11 +269,11 @@ namespace JJSuperMarket.MasterSetup
 
                 if (cmbGroupNameSrch.Text != "")
                 {
-                    dgvStock.ItemsSource = db.StockGroups.Where(x => x.GroupName == cmbGroupNameSrch.Text).ToList();
+                    dgvStock.ItemsSource = db.StockGroups.Where(x => x.GroupName == cmbGroupNameSrch.Text).OrderBy(x=>x.GroupName).ToList();
                 }
                 else
                 {
-                    dgvStock.ItemsSource = db.StockGroups.ToList();
+                    dgvStock.ItemsSource = db.StockGroups.OrderBy(x => x.GroupName).ToList();
                 }
             }
             catch (Exception ex)
@@ -340,7 +328,6 @@ namespace JJSuperMarket.MasterSetup
         }
 
         #endregion
-
 
     }
 }

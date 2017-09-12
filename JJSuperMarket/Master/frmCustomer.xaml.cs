@@ -29,7 +29,7 @@ namespace JJSuperMarket.MasterSetup
     {
         JJSuperMarketEntities db = new JJSuperMarketEntities();
         decimal ID = 0;
-        
+
 
 
         public frmCustomer()
@@ -55,8 +55,8 @@ namespace JJSuperMarket.MasterSetup
                     await DialogHost.Show(sampleMessageDialog, "RootDialog");
                     txtPersonIncharge.Focus();
                 }
-                
-                else if (txtMobile .Text == "")
+
+                else if (txtMobile.Text == "")
                 {
                     var sampleMessageDialog = new SampleMessageDialog
                     {
@@ -64,7 +64,7 @@ namespace JJSuperMarket.MasterSetup
                     };
 
                     await DialogHost.Show(sampleMessageDialog, "RootDialog");
-                    txtMobile .Focus();
+                    txtMobile.Focus();
                 }
 
                 else if (ID != 0)
@@ -81,19 +81,19 @@ namespace JJSuperMarket.MasterSetup
                         }
 
                     }
-                    
-                     if (r == true)
+
+                    if (r == true)
                     {
                         Customer c = db.Customers.Where(x => x.CustomerId == ID).FirstOrDefault();
                         c.CustomerName = txtPersonIncharge.Text;
-                        c.LedgerName ="JJSuper";
+                        c.LedgerName = "JJSuper";
                         c.MobileNo = txtMobile.Text;
-                        c.TelePhoneNo =  txtTelephone.Text;// (txtDisAmt.Text == "" ? 0 : Convert.ToDouble(txtDisAmt.Text.ToString()));
+                        c.TelePhoneNo = txtTelephone.Text;// (txtDisAmt.Text == "" ? 0 : Convert.ToDouble(txtDisAmt.Text.ToString()));
                         c.AddressLine = txtAddress.Text;
                         c.EMailId = txtEmail.Text;
 
                         c.CreditDays = (txtCreditDays.Text == "" ? 0 : Convert.ToDecimal(txtCreditDays.Text)); //  Convert.ToDecimal(txtCreditDays.Text);
-                        c.CreditLimits =( txtCreditDays.Text == "" ? 0 :  Convert.ToDouble(txtCreditLimit.Text));
+                        c.CreditLimits = (txtCreditDays.Text == "" ? 0 : Convert.ToDouble(txtCreditLimit.Text));
                         c.CST = txtGST.Text;
                         c.TinNo = txtTinNo.Text;
 
@@ -140,7 +140,7 @@ namespace JJSuperMarket.MasterSetup
                         c.AddressLine = txtAddress.Text;
                         c.EMailId = txtEmail.Text;
                         c.CreditDays = (txtCreditDays.Text == "" ? 0 : Convert.ToDecimal(txtCreditDays.Text));
-                        c.CreditLimits =(txtCreditLimit .Text=="" ? 0 :  Convert.ToDouble(txtCreditLimit.Text));
+                        c.CreditLimits = (txtCreditLimit.Text == "" ? 0 : Convert.ToDouble(txtCreditLimit.Text));
                         c.CST = txtGST.Text;
                         c.TinNo = txtTinNo.Text;
 
@@ -160,7 +160,7 @@ namespace JJSuperMarket.MasterSetup
 
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 LogInfo er = new JJSuperMarket.LogInfo();
                 er.Error = ex.ToString();
@@ -205,7 +205,7 @@ namespace JJSuperMarket.MasterSetup
                             db.Ledgers.Remove(l);
                             db.SaveChanges();
                         }
-                       
+
 
                         Customer c = db.Customers.Where(x => x.CustomerId == ID).FirstOrDefault();
                         db.Customers.Remove(c);
@@ -222,8 +222,8 @@ namespace JJSuperMarket.MasterSetup
                     }
                 }
             }
-            
-           catch(Exception ex)
+
+            catch (Exception ex)
             {
                 MessageBox.Show(" Can't Delete Contact Admin..");
                 db = new JJSuperMarketEntities();
@@ -231,7 +231,7 @@ namespace JJSuperMarket.MasterSetup
                 LoadWindow();
                 LoadReport();
             }
-            
+
 
         }
 
@@ -261,7 +261,7 @@ namespace JJSuperMarket.MasterSetup
                 txtCreditLimit.Text = c.CreditLimits.ToString();
                 txtTinNo.Text = c.TinNo;
             }
-           catch(Exception  ex)
+            catch (Exception ex)
             {
 
             }
@@ -271,28 +271,28 @@ namespace JJSuperMarket.MasterSetup
         //User Defined
         private async Task<bool> validation()
         {
-           
-                var b = db.Customers.Where(x => x.LedgerName == txtCompanyName.Text).Count();
-                var b1 = db.Customers.Where(x => x.CustomerName == txtPersonIncharge.Text).Count();
 
-               if (b1 != 0)
+            var b = db.Customers.Where(x => x.LedgerName == txtCompanyName.Text).Count();
+            var b1 = db.Customers.Where(x => x.CustomerName == txtPersonIncharge.Text).Count();
+
+            if (b1 != 0)
+            {
+                var sampleMessageDialog = new SampleMessageDialog
                 {
-                    var sampleMessageDialog = new SampleMessageDialog
-                    {
-                        Message = { Text = "" + txtPersonIncharge.Text + ",Already Exist!.Enter new Person Incharge.." }
-                    };
+                    Message = { Text = "" + txtPersonIncharge.Text + ",Already Exist!.Enter new Person Incharge.." }
+                };
 
-                    await DialogHost.Show(sampleMessageDialog, "RootDialog");
-                    txtPersonIncharge.Focus();
-                    return false;
+                await DialogHost.Show(sampleMessageDialog, "RootDialog");
+                txtPersonIncharge.Focus();
+                return false;
 
-                }
-                else
-                {
-                    return true;
-                }
+            }
+            else
+            {
+                return true;
+            }
 
-            
+
 
         }
 
@@ -300,10 +300,10 @@ namespace JJSuperMarket.MasterSetup
         {
             try
             {
-                dgvCustomer.ItemsSource = db.Customers.OrderBy(x=>x.CustomerName).ToList();
+                dgvCustomer.ItemsSource = db.Customers.OrderBy(x => x.CustomerName).ToList();
                 LoadReport();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }
@@ -347,23 +347,21 @@ namespace JJSuperMarket.MasterSetup
 
         private DataTable getData()
         {
-           
-                DataTable dt = new DataTable();
-                using (SqlConnection con = new SqlConnection(AppLib.conStr))
-                {
-                    SqlCommand cmd;
-                    
-                     
-                        string qry = string.Format("Select * from Customer  order by CustomerName");
-                        cmd = new SqlCommand(qry, con);
-                        SqlDataAdapter adp = new SqlDataAdapter(cmd);
-                        adp.Fill(dt);
-                     
+
+            DataTable dt = new DataTable();
+            using (SqlConnection con = new SqlConnection(AppLib.conStr))
+            {
+                SqlCommand cmd;
+                string qry = string.Format("Select * from Customer  order by CustomerName");
+                cmd = new SqlCommand(qry, con);
+                SqlDataAdapter adp = new SqlDataAdapter(cmd);
+                adp.Fill(dt);
 
 
-                }
-                return dt;
-            
+
+            }
+            return dt;
+
         }
 
         //Accepts only numbers
@@ -376,16 +374,16 @@ namespace JJSuperMarket.MasterSetup
             Regex regex = new Regex("[^0-9.-]+"); //regex that matches disallowed text
             return !regex.IsMatch(text);
         }
-        
+
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             LoadWindow();
         }
- 
+
 
         private void txtCustomerSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(txtCustomerSearch .Text))
+            if (!string.IsNullOrWhiteSpace(txtCustomerSearch.Text))
             {
                 dgvCustomer.ItemsSource = db.Customers.Where(x => x.CustomerName.ToLower().Contains(txtCustomerSearch.Text.ToLower())).OrderBy(x => x.CustomerId).ToList();
             }

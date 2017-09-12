@@ -38,6 +38,10 @@
     <ApplicationIcon>logo only.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DataGridExtensions, Version=1.0.36.0, Culture=neutral, PublicKeyToken=43de855f87de903a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DataGridExtensions.1.0.36.0\lib\net40-Client\DataGridExtensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -62,12 +66,26 @@
       <HintPath>..\packages\MaterialDesignThemes.2.3.0.823\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.ReportViewer.Common, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.ReportViewer.ProcessingObjectModel, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\POS\packages\Microsoft.Reporting.WinForms.v11.1.0.0.0\lib\Microsoft.ReportViewer.ProcessingObjectModel.DLL</HintPath>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\Microsoft.Expression.Interactions.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.ReportViewer.WinForms, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.ReportViewer.Common, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Reporting.WinForms.v11.1.0.0.0\lib\Microsoft.ReportViewer.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.ProcessingObjectModel, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Reporting.WinForms.v11.1.0.0.0\lib\Microsoft.ReportViewer.ProcessingObjectModel.DLL</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Reporting.WinForms.v11.1.0.0.0\lib\Microsoft.ReportViewer.WinForms.DLL</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Types, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Reporting.WinForms.v11.1.0.0.0\lib\Microsoft.SqlServer.Types.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
@@ -87,8 +105,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\MahApps.Metro.1.2.4.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml" />
@@ -164,6 +182,9 @@
     <Compile Include="frmLogin.xaml.cs">
       <DependentUpon>frmLogin.xaml</DependentUpon>
     </Compile>
+    <Compile Include="frmUserHome.xaml.cs">
+      <DependentUpon>frmUserHome.xaml</DependentUpon>
+    </Compile>
     <Compile Include="frmWelcome.xaml.cs">
       <DependentUpon>frmWelcome.xaml</DependentUpon>
     </Compile>
@@ -204,6 +225,12 @@
     <Compile Include="Master\frmProducts.xaml.cs">
       <DependentUpon>frmProducts.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Master\frmPurchaseMaster.xaml.cs">
+      <DependentUpon>frmPurchaseMaster.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Master\frmStockGroup.xaml.cs">
+      <DependentUpon>frmStockGroup.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Master\frmSupplier.xaml.cs">
       <DependentUpon>frmSupplier.xaml</DependentUpon>
     </Compile>
@@ -219,6 +246,7 @@
     <Compile Include="PaymentMaster.cs">
       <DependentUpon>JJSuperMarket.tt</DependentUpon>
     </Compile>
+    <Compile Include="Points.cs" />
     <Compile Include="Product.cs">
       <DependentUpon>JJSuperMarket.tt</DependentUpon>
     </Compile>
@@ -226,6 +254,9 @@
       <DependentUpon>JJSuperMarket.tt</DependentUpon>
     </Compile>
     <Compile Include="PurchaseDetail.cs">
+      <DependentUpon>JJSuperMarket.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PurchaseMaster.cs">
       <DependentUpon>JJSuperMarket.tt</DependentUpon>
     </Compile>
     <Compile Include="PurchaseOrder.cs">
@@ -249,6 +280,9 @@
     <Compile Include="ReceiptMaster.cs">
       <DependentUpon>JJSuperMarket.tt</DependentUpon>
     </Compile>
+    <Compile Include="Reports\frmCateogeryWiseSalesReport.xaml.cs">
+      <DependentUpon>frmCateogeryWiseSalesReport.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Reports\frmCustomerLedger.xaml.cs">
       <DependentUpon>frmCustomerLedger.xaml</DependentUpon>
     </Compile>
@@ -266,6 +300,15 @@
     </Compile>
     <Compile Include="Reports\ReceivableReport.xaml.cs">
       <DependentUpon>ReceivableReport.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\Transaction\frmCustomerPoint.xaml.cs">
+      <DependentUpon>frmCustomerPoint.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\Transaction\frmPurchaseMasterReport.xaml.cs">
+      <DependentUpon>frmPurchaseMasterReport.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\Transaction\frmPurchaseMasterSearch.xaml.cs">
+      <DependentUpon>frmPurchaseMasterSearch.xaml</DependentUpon>
     </Compile>
     <Compile Include="Reports\Transaction\frmPurchaseReport.xaml.cs">
       <DependentUpon>frmPurchaseReport.xaml</DependentUpon>
@@ -391,6 +434,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="frmUserHome.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="frmWelcome.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -429,6 +476,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Master\frmPurchaseMaster.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Master\frmStockGroup.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Master\frmSupplier.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -436,6 +491,10 @@
     <Page Include="Master\frmUOM.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Reports\frmCateogeryWiseSalesReport.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Reports\frmCustomerLedger.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -460,6 +519,18 @@
     <Page Include="Reports\ReceivableReport.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Reports\Transaction\frmCustomerPoint.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Reports\Transaction\frmPurchaseMasterReport.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Reports\Transaction\frmPurchaseMasterSearch.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Reports\Transaction\frmPurchaseReport.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -561,8 +632,12 @@
     <EmbeddedResource Include="Reports\rptDayBook.rdlc" />
     <EmbeddedResource Include="Reports\rptProductSaleReport.rdlc" />
     <EmbeddedResource Include="Reports\rptStockReport.rdlc" />
+    <EmbeddedResource Include="Reports\Transaction\rptOverAllSalesReport.rdlc" />
     <EmbeddedResource Include="Reports\Transaction\rptPaymentReport.rdlc" />
     <EmbeddedResource Include="Reports\Transaction\rptPurchaseDetails.rdlc" />
+    <EmbeddedResource Include="Reports\Transaction\rptPurchaseMasterReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\Transaction\rptPurchaseOrderDetails.rdlc" />
     <EmbeddedResource Include="Reports\Transaction\rptPurchaseOrderReport.rdlc" />
     <EmbeddedResource Include="Reports\Transaction\rptPurchaseReport.rdlc" />
@@ -597,11 +672,14 @@
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="logo only.ico" />
@@ -624,6 +702,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="obj\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

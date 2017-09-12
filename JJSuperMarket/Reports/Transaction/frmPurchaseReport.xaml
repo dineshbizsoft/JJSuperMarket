@@ -6,10 +6,10 @@
         xmlns:local="clr-namespace:JJSuperMarket.Reports.Transaction"
         mc:Ignorable="d"
         xmlns:rv="clr-namespace:Microsoft.Reporting.WinForms;assembly=Microsoft.ReportViewer.WinForms"
-            xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
-                  xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-                  BorderThickness="1"
-            Title="Purchase Report"  Height="650" Width="1200"  WindowStartupLocation="CenterScreen" >
+        xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        BorderThickness="1"
+        Title="Purchase Report"  Height="650" Width="1200"  WindowStartupLocation="CenterScreen" >
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10*"/>

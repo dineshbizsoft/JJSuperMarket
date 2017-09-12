@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="JJSuperMarketModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="JJSuperMarketModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AccountGroups">
           <Key>
             <PropertyRef Name="AccountGroupId" />
@@ -46,24 +46,6 @@ warning 6002: The table/view 'JJSuperMarket.dbo.AutoGeneration' does not have a 
           <Property Name="CPerson2" Type="nvarchar" MaxLength="155" />
           <Property Name="MobileNo2" Type="nvarchar" MaxLength="20" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'JJSuperMarket.dbo.ColorSchema' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="ColorSchema">
-          <Property Name="ColorId" Type="nvarchar" MaxLength="20" />
-          <Property Name="ColorCode" Type="nvarchar" MaxLength="20" />
-          <Property Name="staffName" Type="nvarchar" MaxLength="20" />
-          <Property Name="FColor" Type="nvarchar" MaxLength="30" />
-          <Property Name="BColor" Type="nvarchar" MaxLength="30" />
-          <Property Name="Grid1stFColor" Type="nvarchar" MaxLength="30" />
-          <Property Name="Grid2stFColor" Type="nvarchar" MaxLength="30" />
-          <Property Name="Grid1stBColor" Type="nvarchar" MaxLength="30" />
-          <Property Name="Grid2stBColor" Type="nvarchar" MaxLength="30" />
-          <Property Name="btnBordercolor" Type="nvarchar" MaxLength="30" />
-          <Property Name="btnMouseDownBackcolor" Type="nvarchar" MaxLength="30" />
-          <Property Name="btnMouseOverBackcolor" Type="nvarchar" MaxLength="30" />
-          <Property Name="GridHeading" Type="nvarchar" MaxLength="30" />
-          <Property Name="lbltitle" Type="nvarchar" MaxLength="30" />
-        </EntityType>-->
         <EntityType Name="CompanyDetails">
           <Key>
             <PropertyRef Name="CompanyId" />
@@ -224,7 +206,7 @@ warning 6013: The table/view 'JJSuperMarket.dbo.ColorSchema' does not have a pri
           <Property Name="CustomerId" Type="decimal" Precision="18" Scale="0" />
           <Property Name="PaymentMode" Type="nvarchar" MaxLength="50" />
           <Property Name="PayAmount" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="Description" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="Products">
           <Key>
@@ -272,6 +254,22 @@ warning 6013: The table/view 'JJSuperMarket.dbo.ColorSchema' does not have a pri
           <Property Name="UOM" Type="decimal" Precision="18" Scale="0" />
           <Property Name="TaxPer" Type="nvarchar" MaxLength="20" />
           <Property Name="DisPer" Type="float" />
+        </EntityType>
+        <EntityType Name="PurchaseMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PurchaseCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="PurchaseDate" Type="date" />
+          <Property Name="LedgerCode" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="PurchaseType" Type="nvarchar" MaxLength="50" />
+          <Property Name="InvoiceNo" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="Extra" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="DiscountAmount" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="Narration" Type="nvarchar" MaxLength="150" />
+          <Property Name="ItemAmount" Type="float" />
+          <Property Name="NoOfProducts" Type="decimal" Precision="18" Scale="0" />
         </EntityType>
         <EntityType Name="PurchaseOrder">
           <Key>
@@ -373,7 +371,7 @@ warning 6013: The table/view 'JJSuperMarket.dbo.ColorSchema' does not have a pri
           <Property Name="CustomerId" Type="decimal" Precision="18" Scale="0" />
           <Property Name="ReceiptMode" Type="nvarchar" MaxLength="50" />
           <Property Name="ReceiptAmount" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="Description" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="Sales">
           <Key>
@@ -463,19 +461,6 @@ warning 6013: The table/view 'JJSuperMarket.dbo.ColorSchema' does not have a pri
           <Property Name="TaxPer" Type="nvarchar" MaxLength="20" />
           <Property Name="DisPer" Type="float" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'JJSuperMarket.dbo.Sheet1$' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="Sheet1$">
-          <Property Name="S#No" Type="float" />
-          <Property Name="Code" Type="float" />
-          <Property Name="Product" Type="nvarchar" MaxLength="255" />
-          <Property Name="MRP" Type="float" />
-          <Property Name="UOM" Type="nvarchar" MaxLength="255" />
-          <Property Name="UOMID" Type="float" />
-          <Property Name="Selling Price" Type="float" />
-          <Property Name="Qty" Type="float" />
-          <Property Name="ReOrderLevel" Type="float" />
-        </EntityType>-->
         <!--Errors Found During Generation:
 warning 6002: The table/view 'JJSuperMarket.dbo.SoftValidation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="SoftValidation">
@@ -730,6 +715,18 @@ warning 6002: The table/view 'JJSuperMarket.dbo.TmpProduct' does not have a prim
             </Principal>
             <Dependent Role="PurchaseDetails">
               <PropertyRef Name="UOM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseMaster_Supplier">
+          <End Role="Supplier" Type="Self.Supplier" Multiplicity="0..1" />
+          <End Role="PurchaseMaster" Type="Self.PurchaseMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Supplier">
+              <PropertyRef Name="SupplierId" />
+            </Principal>
+            <Dependent Role="PurchaseMaster">
+              <PropertyRef Name="LedgerCode" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1050,6 +1047,7 @@ warning 6002: The table/view 'JJSuperMarket.dbo.TmpProduct' does not have a prim
           <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Purchase" EntityType="Self.Purchase" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PurchaseDetails" EntityType="Self.PurchaseDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PurchaseMaster" EntityType="Self.PurchaseMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PurchaseOrder" EntityType="Self.PurchaseOrder" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PurchaseOrderDetails" EntityType="Self.PurchaseOrderDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PurchaseReturn" EntityType="Self.PurchaseReturn" Schema="dbo" store:Type="Tables" />
@@ -1150,6 +1148,10 @@ warning 6002: The table/view 'JJSuperMarket.dbo.TmpProduct' does not have a prim
           <AssociationSet Name="FK_PurchaseDetails_UOM" Association="Self.FK_PurchaseDetails_UOM">
             <End Role="UnitsOfMeasurement" EntitySet="UnitsOfMeasurement" />
             <End Role="PurchaseDetails" EntitySet="PurchaseDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseMaster_Supplier" Association="Self.FK_PurchaseMaster_Supplier">
+            <End Role="Supplier" EntitySet="Supplier" />
+            <End Role="PurchaseMaster" EntitySet="PurchaseMaster" />
           </AssociationSet>
           <AssociationSet Name="FK_PurchaseOrder_Supplier" Association="Self.FK_PurchaseOrder_Supplier">
             <End Role="Supplier" EntitySet="Supplier" />
@@ -1252,8 +1254,7 @@ warning 6002: The table/view 'JJSuperMarket.dbo.TmpProduct' does not have a prim
             <End Role="StockReport" EntitySet="StockReport" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="JJSuperMarketModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1460,7 +1461,7 @@ warning 6002: The table/view 'JJSuperMarket.dbo.TmpProduct' does not have a prim
           <Property Name="CustomerId" Type="Decimal" Precision="18" Scale="0" />
           <Property Name="PaymentMode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="PayAmount" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
@@ -1635,7 +1636,7 @@ warning 6002: The table/view 'JJSuperMarket.dbo.TmpProduct' does not have a prim
           <Property Name="CustomerId" Type="Decimal" Precision="18" Scale="0" />
           <Property Name="ReceiptMode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ReceiptAmount" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Sale">
           <Key>
@@ -1807,6 +1808,7 @@ warning 6002: The table/view 'JJSuperMarket.dbo.TmpProduct' does not have a prim
           <NavigationProperty Name="Purchases" Relationship="Self.FK_Purchase_Supplier" FromRole="Supplier" ToRole="Purchase" />
           <NavigationProperty Name="PurchaseOrders" Relationship="Self.FK_PurchaseOrder_Supplier" FromRole="Supplier" ToRole="PurchaseOrder" />
           <NavigationProperty Name="PurchaseReturns" Relationship="Self.FK_PurchaseReturn_Supplier" FromRole="Supplier" ToRole="PurchaseReturn" />
+          <NavigationProperty Name="PurchaseMasters" Relationship="JJSuperMarketModel.FK_PurchaseMaster_Supplier" FromRole="Supplier" ToRole="PurchaseMaster" />
         </EntityType>
         <EntityType Name="TaxMaster">
           <Key>
@@ -2503,7 +2505,41 @@ warning 6002: The table/view 'JJSuperMarket.dbo.TmpProduct' does not have a prim
             <End Role="UnitsOfMeasurement" EntitySet="UnitsOfMeasurements" />
             <End Role="StockReport" EntitySet="StockReports" />
           </AssociationSet>
+          <EntitySet Name="PurchaseMasters" EntityType="JJSuperMarketModel.PurchaseMaster" />
+          <AssociationSet Name="FK_PurchaseMaster_Supplier" Association="JJSuperMarketModel.FK_PurchaseMaster_Supplier">
+            <End Role="Supplier" EntitySet="Suppliers" />
+            <End Role="PurchaseMaster" EntitySet="PurchaseMasters" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="PurchaseMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PurchaseCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PurchaseDate" Type="DateTime" Precision="0" />
+          <Property Name="LedgerCode" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="PurchaseType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="InvoiceNo" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="Extra" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="DiscountAmount" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="Narration" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ItemAmount" Type="Double" />
+          <Property Name="NoOfProducts" Type="Decimal" Precision="18" Scale="0" />
+          <NavigationProperty Name="Supplier" Relationship="JJSuperMarketModel.FK_PurchaseMaster_Supplier" FromRole="PurchaseMaster" ToRole="Supplier" />
+        </EntityType>
+        <Association Name="FK_PurchaseMaster_Supplier">
+          <End Type="JJSuperMarketModel.Supplier" Role="Supplier" Multiplicity="0..1" />
+          <End Type="JJSuperMarketModel.PurchaseMaster" Role="PurchaseMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Supplier">
+              <PropertyRef Name="SupplierId" />
+            </Principal>
+            <Dependent Role="PurchaseMaster">
+              <PropertyRef Name="LedgerCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3104,6 +3140,23 @@ warning 6002: The table/view 'JJSuperMarket.dbo.TmpProduct' does not have a prim
                 <ScalarProperty Name="UOM" ColumnName="UOM" />
                 <ScalarProperty Name="SellingPrice" ColumnName="SellingPrice" />
                 <ScalarProperty Name="ReorderLevel" ColumnName="ReorderLevel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PurchaseMasters">
+            <EntityTypeMapping TypeName="JJSuperMarketModel.PurchaseMaster">
+              <MappingFragment StoreEntitySet="PurchaseMaster">
+                <ScalarProperty Name="NoOfProducts" ColumnName="NoOfProducts" />
+                <ScalarProperty Name="ItemAmount" ColumnName="ItemAmount" />
+                <ScalarProperty Name="Narration" ColumnName="Narration" />
+                <ScalarProperty Name="DiscountAmount" ColumnName="DiscountAmount" />
+                <ScalarProperty Name="Extra" ColumnName="Extra" />
+                <ScalarProperty Name="InvoiceNo" ColumnName="InvoiceNo" />
+                <ScalarProperty Name="PurchaseType" ColumnName="PurchaseType" />
+                <ScalarProperty Name="LedgerCode" ColumnName="LedgerCode" />
+                <ScalarProperty Name="PurchaseDate" ColumnName="PurchaseDate" />
+                <ScalarProperty Name="PurchaseCode" ColumnName="PurchaseCode" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

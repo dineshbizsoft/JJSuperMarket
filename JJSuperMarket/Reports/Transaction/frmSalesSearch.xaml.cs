@@ -79,8 +79,8 @@ namespace JJSuperMarket.Reports.Transaction
 
             if (cmbSalesType.Text != null)
             {
-                p = p.Where(x => x.SalesType == cmbSalesType.Text).ToList();
-            }
+                    p = p.Where(x => x.SalesType == cmbSalesType.Text).ToList();
+             }
             if (cmbSupplier.Text != "")
             {
                 p = p.Where(x => (x.Customer==null?"" : x.Customer.CustomerName) == cmbSupplier.Text).ToList();

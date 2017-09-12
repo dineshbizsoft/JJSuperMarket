@@ -83,6 +83,19 @@
                                     </StackPanel>
                                 </materialDesign:HintAssist.Hint>
                             </TextBox>
+                            <ComboBox   x:Name="cmbUnder" FontWeight="Bold" FontSize="14"  Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:TransitionAssist.DisableTransitions="True" DropDownOpened="cmbUnder_DropDownOpened"  >
+                                <materialDesign:HintAssist.Hint>
+                                    <StackPanel Orientation="Horizontal" Width="331">
+                                        <materialDesign:PackIcon  Kind="CartPlus"  Foreground="{Binding BorderBrush, ElementName=PhoneTextBox}"  Height="25" Width="25" />
+                                        <TextBlock Text="Category" />
+                                    </StackPanel>
+                                </materialDesign:HintAssist.Hint>
+                                <ComboBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <VirtualizingStackPanel VirtualizingPanel.VirtualizationMode="Recycling" Height="250"/>
+                                    </ItemsPanelTemplate>
+                                </ComboBox.ItemsPanel>
+                            </ComboBox>
                             <ComboBox   x:Name="cmbUOM" FontWeight="Bold" FontSize="14"  Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:TransitionAssist.DisableTransitions="True" >
                                 <materialDesign:HintAssist.Hint>
                                     <StackPanel Orientation="Horizontal" Width="331">

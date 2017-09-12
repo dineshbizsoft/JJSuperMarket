@@ -17,7 +17,7 @@
     xmlns:TransactionReport="clr-namespace:JJSuperMarket.Reports.Transaction"  
         xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
      
-        Title="JJ SuperMarket" Height="600" Width="1100"    WindowState="Maximized" Icon="Image/logo only.png"     >
+        Title="JJ SuperMarket" Height="600" Width="1100"    WindowState="Maximized" Icon="Image/logo only.png"    Closing="Window_Closing">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -85,7 +85,11 @@
                                             <Master:frmSupplier/>
                                         </domain:DemoItem.Content>
                                     </domain:DemoItem>
-
+                                    <domain:DemoItem Name="Category">
+                                        <domain:DemoItem.Content>
+                                            <Master:frmStockGroup/>
+                                        </domain:DemoItem.Content>
+                                    </domain:DemoItem>
                                     <domain:DemoItem Name="Products">
                                         <domain:DemoItem.Content>
                                             <Master:frmProducts/>
@@ -109,12 +113,16 @@
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
 
-                                    <domain:DemoItem Name="Purchase">
+                                    <domain:DemoItem Name="Purchase 1">
                                         <domain:DemoItem.Content>
                                             <Transaction:frmPurchaseNew />
                                         </domain:DemoItem.Content>
                                     </domain:DemoItem>
-
+                                    <domain:DemoItem Name="Purchase 2">
+                                        <domain:DemoItem.Content>
+                                            <Master:frmPurchaseMaster />
+                                        </domain:DemoItem.Content>
+                                    </domain:DemoItem>
                                     <domain:DemoItem Name="Sales">
                                         <domain:DemoItem.Content>
                                             <Transaction:frmSales/>
@@ -154,12 +162,18 @@
                                     </ListBox.ItemTemplate>
                                     <domain:DemoItem Name="Customer Sales Report">
                                         <domain:DemoItem.Content>
-                                            <TransactionReport:frmSalesReport   ></TransactionReport:frmSalesReport>
+                                            <TransactionReport:frmSalesReport/>
                                         </domain:DemoItem.Content>
                                     </domain:DemoItem>
                                     <domain:DemoItem Name="Stock Item Report">
                                         <domain:DemoItem.Content>
                                             <Reports:frmItemWiseStockReport></Reports:frmItemWiseStockReport>
+                                        </domain:DemoItem.Content>
+                                    </domain:DemoItem>
+
+                                    <domain:DemoItem Name="Category Wise Report">
+                                        <domain:DemoItem.Content>
+                                            <Reports:frmCateogeryWiseSalesReport></Reports:frmCateogeryWiseSalesReport>
                                         </domain:DemoItem.Content>
                                     </domain:DemoItem>
                                     <domain:DemoItem Name="ReorderLevel Report">

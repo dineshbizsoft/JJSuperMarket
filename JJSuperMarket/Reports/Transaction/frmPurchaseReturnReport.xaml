@@ -9,7 +9,7 @@
             xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
                   xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                   BorderThickness="1"
-            Title="Purchase Return Search"  Height="650" Width="1200" Icon="/AccountsBuddy;component/Image/ic_launcher-web.png" WindowStartupLocation="CenterScreen" >
+            Title="Purchase Return Search"  Height="650" Width="1200"  WindowStartupLocation="CenterScreen" >
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10*"/>

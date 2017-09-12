@@ -55,7 +55,7 @@ namespace JJSuperMarket.Reports.Transaction
                 ReportDataSource Data = new ReportDataSource("PurchaseReturn", dt);
 
                 PurchaseReturnReport.LocalReport.DataSources.Add(Data);
-                PurchaseReturnReport.LocalReport.ReportEmbeddedResource = "JJSuperMarketReports.Transaction.rptPurchaseReturn.rdlc";
+                PurchaseReturnReport.LocalReport.ReportEmbeddedResource = "JJSuperMarket.Reports.Transaction.rptPurchaseReturn.rdlc";
                 PurchaseReturnReport.LocalReport.SubreportProcessing += new SubreportProcessingEventHandler(PurchaseDetails);
 
                 PurchaseReturnReport.RefreshReport();

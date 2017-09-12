@@ -41,7 +41,18 @@ namespace JJSuperMarket.Transaction
             InitializeComponent();
             dtpP.SelectedDate = DateTime.Today;
             LoadWindow();
-            
+            dtpFromDate.SelectedDate = DateTime.Today;
+            dtpToDate.SelectedDate = DateTime.Today;
+
+            var v = db.Customers.Where(x => !string.IsNullOrEmpty(x.CustomerName)).OrderBy(x => x.CustomerName).ToList();
+            cmbCustomer.ItemsSource = v;
+            cmbCustomer.DisplayMemberPath = "CustomerName";
+            cmbCustomer.SelectedValuePath = "CustomerId";
+
+            var m = db.Customers.Where(x => !string.IsNullOrEmpty(x.MobileNo)).OrderBy(x => x.MobileNo).ToList();
+            cmbMobileNumber.ItemsSource = m;
+            cmbMobileNumber.DisplayMemberPath = "MobileNo";
+            cmbMobileNumber.SelectedValuePath = "CustomerId";
         }
 
         #region Numeric Only
@@ -57,6 +68,12 @@ namespace JJSuperMarket.Transaction
 
         private void cmbNameDr_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            setBalance();
+
+        }
+
+        public void setBalance()
+        {
             double? Amt1 = null;
             decimal LedgerId;
             try
@@ -66,8 +83,8 @@ namespace JJSuperMarket.Transaction
 
                     var Cus = cmbNameDr.SelectedItem as Customer;
                     List<CustomerDueReportN> Cuslist = new List<CustomerDueReportN>();
-
-                    foreach (var cust in db.Sales.Where(x => x.LedgerCode == Cus.CustomerId && x.SalesType == "Credit").ToList())
+                    var l = db.Sales.Where(x => x.LedgerCode == Cus.CustomerId).ToList();
+                    foreach (var cust in  l.Where(x=> x.SalesType == "Credit").ToList())
                     {
                         var Pay = db.ReceiptMasters.Where(x => x.CustomerId == cust.Customer.CustomerId).ToList();
 
@@ -97,12 +114,14 @@ namespace JJSuperMarket.Transaction
                     List<SupplierDueReportN> Suplist = new List<SupplierDueReportN>();
                     if (sup != null)
                     {
-                        foreach (var supl in db.PurchaseReturns.Where(x => x.LedgerCode == sup.SupplierId && x.PRType == "Credit").ToList())
+
+
+                        foreach (var supl in db.PurchaseReturns.Where(x => x.LedgerCode == sup.SupplierId && x.PRType == "Credit" ).ToList())
                         {
                             var Pay = db.ReceiptMasters.Where(x => x.SupplierId == supl.Supplier.SupplierId).ToList();
 
                             SupplierDueReportN c1 = new SupplierDueReportN();
-                            c1.SupplierName = supl.Supplier.SupplierName;
+                            c1.LedgerName = supl.Supplier.LedgerName;
                             // c1.DueDate = String.Format("{0:dd-MM-yyyy}", (cust.Date.Value == null ? DateTime.Today : cust.Date.Value.AddDays(cust.Supplier.CreditDays == null ? 0 : (double)cust.Supplier.CreditDays.Value)));
 
                             c1.Amount = Convert.ToDecimal(string.Format("{0:N2}", supl.ItemAmount.Value));
@@ -129,7 +148,6 @@ namespace JJSuperMarket.Transaction
 
 
             }
-
         }
 
         private void cmbPaymentTo_LostFocus(object sender, RoutedEventArgs e)
@@ -174,7 +192,7 @@ namespace JJSuperMarket.Transaction
                         SuplierReceiptList s1 = new SuplierReceiptList();
                         s1.Id = pay.ReceiptId;
                         s1.Date = pay.ReceiptDate.Value;
-                        s1.Name = sup.SupplierName;
+                        s1.Name = sup.LedgerName;
                         s1.Amount = (decimal)pay.ReceiptAmount;
                         s1.Description = pay.Description;
                         splist.Add(s1);
@@ -407,7 +425,47 @@ namespace JJSuperMarket.Transaction
 
         private void btnSearch1_Click(object sender, RoutedEventArgs e)
         {
-            // LoadReport();
+            JJSuperMarketEntities db = new JJSuperMarketEntities();
+            try
+            {
+
+
+                List<CustomerDueReportReceipt> Cuslist = new List<CustomerDueReportReceipt>();
+                var k = cmbCustomer.SelectedItem as Customer;
+                Cuslist.Clear();
+                dgvReceivableCustomer.Items.Refresh();
+                foreach (var Cus in db.Customers.ToList())
+                {
+                    foreach (var cust in db.Sales.Where(x => x.LedgerCode == Cus.CustomerId && x.SalesType == "Credit"  && x.SalesDate >= dtpFromDate.SelectedDate.Value && x.SalesDate <= dtpToDate.SelectedDate.Value).ToList())
+                    {
+                        var Pay = db.ReceiptMasters.Where(x => x.CustomerId == cust.Customer.CustomerId).ToList();
+
+                        CustomerDueReportReceipt c1 = new CustomerDueReportReceipt();
+                        c1.CustomerName = cust.Customer.CustomerName;
+                        // c1.DueDate = String.Format("{0:dd-MM-yyyy}", (cust.Date.Value == null ? DateTime.Today : cust.Date.Value.AddDays(cust.Supplier.CreditDays == null ? 0 : (double)cust.Supplier.CreditDays.Value)));
+
+                        c1.Amount = Convert.ToDecimal(string.Format("{0:N2}", cust.ItemAmount.Value));
+                        c1.ReceiptAmount = Pay == null ? 0 : Convert.ToDecimal(string.Format("{0:N2}", Pay.Where(x => x.SalesId == cust.InvoiceNo).Sum(x => x.ReceiptAmount).Value));
+                        c1.Balance = Convert.ToDecimal(string.Format("{0:N2}", c1.Amount - c1.ReceiptAmount));
+
+                        c1.InDate = string.Format("{0:dd-MM-yyyy}", cust.SalesDate);
+                        c1.InvoiceNo = String.Format("INV {0}", cust.InvoiceNo);
+                        //c1.IsOverdue = (DateTime.Now - cust.Date.Value.AddDays((double)(cust.Supplier.CreditDays == null ? 0 : cust.Supplier.CreditDays.Value))).TotalDays > 0; ;
+                        if (c1.Balance > 0) Cuslist.Add(c1);
+
+                    }
+                }
+                if (cmbCustomer.Text != "")
+                { dgvReceivableCustomer.ItemsSource = Cuslist.Where(x => x.CustomerName == cmbCustomer.Text).OrderBy(x => x.InvoiceNo).ToList(); }
+                else
+                { dgvReceivableCustomer.ItemsSource = Cuslist.OrderBy(x => x.InvoiceNo); }
+
+            }
+            catch (Exception ex)
+            {
+
+
+            }
         }
 
         private void btnSearch_Click(object sender, RoutedEventArgs e)
@@ -417,8 +475,8 @@ namespace JJSuperMarket.Transaction
                 var cid = db.Customers.Where(x => x.CustomerName == cmbCompanySrch.Text).FirstOrDefault();
                 if (cid != null) dgvCustomer.ItemsSource = db.ReceiptMasters.Where(x => x.CustomerId == cid.CustomerId).Select(x => new { Id = x.ReceiptId, Date = x.ReceiptDate, Name = cid.CustomerName, Amount = x.ReceiptAmount, Description = x.Description }).ToList();
 
-                var sid = db.Suppliers.Where(x => x.SupplierName == cmbCompanySrch.Text).FirstOrDefault();
-                if (sid != null) dgvCustomer.ItemsSource = db.ReceiptMasters.Where(x => x.SupplierId == sid.SupplierId).Select(x => new { Id = x.ReceiptId, Date = x.ReceiptDate, Name = sid.SupplierName, Amount = x.ReceiptAmount, Description = x.Description }).ToList();
+                var sid = db.Suppliers.Where(x => x.LedgerName == cmbCompanySrch.Text).FirstOrDefault();
+                if (sid != null) dgvCustomer.ItemsSource = db.ReceiptMasters.Where(x => x.SupplierId == sid.SupplierId).Select(x => new { Id = x.ReceiptId, Date = x.ReceiptDate, Name = sid.LedgerName, Amount = x.ReceiptAmount, Description = x.Description }).ToList();
 
 
             }
@@ -551,7 +609,7 @@ namespace JJSuperMarket.Transaction
             if (rbtCustomerMaster.IsChecked == true)
             {
                 var v = db.Customers.ToList();
-                var d = db.Sales.Where(x => x.SalesType == "Credit").Select(x => x.Customer.CustomerName).ToList();
+                var d = db.Sales.Where(x => x.SalesType == "Credit" ).Select(x => x.Customer.CustomerName).ToList();
                 
                 cmbNameDr.ItemsSource = v;
                 cmbNameDr.DisplayMemberPath = "CustomerName";
@@ -561,13 +619,13 @@ namespace JJSuperMarket.Transaction
             else if (rbtSupplierMaster.IsChecked == true)
             {
                 var v = db.Suppliers.ToList();
-                var d = db.PurchaseReturns.Where(x => x.PRType == "Credit").Select(x => x.Supplier.SupplierName).ToList();
+                var d = db.PurchaseReturns.Where(x => x.PRType == "Credit" ).Select(x => x.Supplier.LedgerName).ToList();
                
                 cmbNameDr.ItemsSource = v;
-                cmbNameDr.DisplayMemberPath = "SupplierName";
+                cmbNameDr.DisplayMemberPath = "LedgerName";
                 cmbNameDr.SelectedValuePath = "SupplierId";
 
-                //cmbNameDr.ItemsSource = db.Suppliers.Select(x => x.SupplierName).ToList();
+                //cmbNameDr.ItemsSource = db.Suppliers.Select(x => x.LedgerName).ToList();
             }
         }
 
@@ -659,9 +717,9 @@ namespace JJSuperMarket.Transaction
             {
                 var v = db.Suppliers.ToList();
                 cmbCompanySrch.ItemsSource = v;
-                cmbCompanySrch.DisplayMemberPath = "SupplierName";
+                cmbCompanySrch.DisplayMemberPath = "LedgerName";
                 cmbCompanySrch.SelectedValuePath = "SupplierId";
-                // cmbCompanySrch.ItemsSource = db.Suppliers.Select(x => x.SupplierName).ToList();
+                // cmbCompanySrch.ItemsSource = db.Suppliers.Select(x => x.LedgerName).ToList();
             }
         }
         private void rbtSupplierMaster_Click_1(object sender, RoutedEventArgs e)
@@ -672,20 +730,29 @@ namespace JJSuperMarket.Transaction
 
 
         #endregion
-
-        private void dgvCustomer_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+          private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             LoadWindow();
         }
 
-        private void UserControl_Loaded_1(object sender, RoutedEventArgs e)
+         private void cmbCustomer_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            var cust = cmbCustomer.SelectedItem as Customer;
+            cmbMobileNumber.SelectedIndex = -1;
+            if (cust != null)
+            {
+                cmbMobileNumber.SelectedItem = cust;
 
+            }
+        }
+
+        private void cmbMobileNumber_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var cust = cmbMobileNumber.SelectedItem as Customer;
+            if (cust != null)
+            {
+                cmbCustomer.SelectedItem = cust;
+            }
         }
     }
     class CustomerDueReportN
@@ -697,12 +764,21 @@ namespace JJSuperMarket.Transaction
         public decimal PaidAmount { get; set; }
         public decimal Balance { get; set; }
     }
+    class CustomerDueReportReceipt
+    {
+        public string InvoiceNo { get; set; }
+        public string InDate { get; set; }
+        public string CustomerName { get; set; }
+        public decimal Amount { get; set; }
+        public decimal ReceiptAmount { get; set; }
+        public decimal Balance { get; set; }
+    }
 
     class SupplierDueReportN
     {
         public string PRInvoiceNo { get; set; }
         public string Date { get; set; }
-        public string SupplierName { get; set; }
+        public string LedgerName { get; set; }
         public decimal Amount { get; set; }
         public decimal PaidAmount { get; set; }
         public decimal Balance { get; set; }

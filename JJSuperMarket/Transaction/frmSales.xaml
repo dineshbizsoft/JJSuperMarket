@@ -7,7 +7,9 @@
              mc:Ignorable="d" 
              Loaded="UserControl_Loaded" 
             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             d:DesignWidth="1100" Background="White" Height="610">
+             d:DesignWidth="1100" Background="White" Height="610"
+            xmlns:data="urn:tom-englert.de/DataGridExtensions"
+             >
 
     <Grid>
         <Grid.RowDefinitions>
@@ -51,7 +53,7 @@
                 <Grid Grid.Row="1" Margin="0,10,0,0">
                     <ScrollViewer  HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Margin="10,0,10,10" >
 
-                        <DataGrid x:Name="dgvDetails" HorizontalAlignment="Center" CanUserAddRows="False" BorderThickness="1" VerticalAlignment="Center" Height="312" Width="868"  CanUserSortColumns="True"  AutoGenerateColumns="False"  Background="White"  MouseDoubleClick="dgvDetails_MouseDoubleClick">
+                        <DataGrid x:Name="dgvDetails" HorizontalAlignment="Center" CanUserAddRows="False" BorderThickness="1" VerticalAlignment="Center" Height="312" Width="868"  CanUserSortColumns="True"  AutoGenerateColumns="False"  Background="White"  MouseDoubleClick="dgvDetails_MouseDoubleClick" >
                             <DataGrid.ColumnHeaderStyle>
                                 <Style TargetType="{x:Type DataGridColumnHeader}">
 
@@ -60,6 +62,7 @@
                             </DataGrid.ColumnHeaderStyle>
 
                             <DataGrid.Columns>
+                                <DataGridTextColumn Header="SNO" Width="50" Binding="{Binding SNo}" IsReadOnly="True"  EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"/>
                                 <DataGridTextColumn Header="Id" Width="50" Binding="{Binding ''}" Visibility="Hidden" IsReadOnly="True"  EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"/>
                                 <DataGridTextColumn Header="Item Name" FontWeight="Bold" Width="300" Binding="{Binding ProductName}" IsReadOnly="True"  EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"/>
                                 <DataGridTextColumn Header="UOM" FontWeight="Bold" Width="50" Binding="{Binding UOMSymbol}" IsReadOnly="True"  EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"/>
@@ -104,7 +107,7 @@
                         <Button Width="80" Height="30" x:Name="btnSave" Content="SAVE"  Margin="5,10,5,0" Click="btnSave_Click" VerticalAlignment="Top" />
                         <Button Width="80" Height="30" x:Name="btnDelete" Content="DELETE"   Margin="5 5" Click="btnDelete_Click" />
                         <Button Width="80" Height="30" x:Name="btnClear" Content="CLEAR" Margin="5 5" Click="btnClear_Click" />
-                        <Button Width="80" Visibility="Collapsed" Height="30" x:Name="btnView" Content="VIEW"  Margin="5 5" Click="btnView_Click"/>
+                        <Button Width="80" Height="30" x:Name="btnPoint" Content="POINTS"  Margin="5,0,5,11" Click="btnPoint_Click" VerticalAlignment="Bottom"/>
                         <Button Width="87" Height="30" x:Name="btnSearch" Content="SEARCH"   Margin="5 5"  Click="btnSearch_Click"/>
                         <Button Width="80" Height="30" x:Name="btnPrint" Content="PRINT" Margin="5 5" Click="btnPrint_Click"  />
 
@@ -153,6 +156,8 @@
                     <ComboBoxItem Content="Cash" />
                     <ComboBoxItem Content="Credit" />
                     <ComboBoxItem Content="Card" />
+                    <ComboBoxItem Content="Coupon" />
+                    <ComboBoxItem Content="Redeem" />
                 </ComboBox>
                 <Label x:Name="lblPoint" Content="Point"  FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" Margin="44,63,0,0" VerticalAlignment="Top" Width="103" Height="29"/>
                 <!--#endregion-->

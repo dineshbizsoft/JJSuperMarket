@@ -20,6 +20,7 @@ namespace JJSuperMarket
             this.Purchases = new HashSet<Purchase>();
             this.PurchaseOrders = new HashSet<PurchaseOrder>();
             this.PurchaseReturns = new HashSet<PurchaseReturn>();
+            this.PurchaseMasters = new HashSet<PurchaseMaster>();
         }
     
         public decimal SupplierId { get; set; }
@@ -41,5 +42,7 @@ namespace JJSuperMarket
         public virtual ICollection<PurchaseOrder> PurchaseOrders { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PurchaseReturn> PurchaseReturns { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PurchaseMaster> PurchaseMasters { get; set; }
     }
 }

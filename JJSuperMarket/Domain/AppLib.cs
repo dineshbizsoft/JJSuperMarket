@@ -14,7 +14,7 @@ namespace JJSuperMarket.Domain
     {
         public static string TempleName = "";
         public static string AppName = "";
-        public static String conStr = @"Data Source=.\sqlexpresstest;Initial Catalog=JJSuperMarket;Integrated Security=True";
+        public static String conStr = @"Data Source=.\sqlexpresstest;Initial Catalog=JJSuperMarket;integrated security=false;user id=sa;password=abc";
 
         public static void NumericOnly(object sender, TextCompositionEventArgs e)
         {

@@ -6,8 +6,9 @@
         xmlns:local="clr-namespace:JJSuperMarket.Transaction"
         mc:Ignorable="d" Loaded="Window_Loaded" 
         MaxWidth="450" MaxHeight="450" MinHeight="450" MinWidth="450"
+        xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        Title="frmProductDetails" Height="450" Width="455.639" WindowStartupLocation="CenterScreen">
+        Title="Product Details" Height="450" Width="455.639" BorderThickness="1" BorderBrush="Black" WindowStartupLocation="CenterScreen" Icon="/JJSuperMarket;component/Image/logo only.ico">
     <Grid>
         <TextBox  x:Name="cmbProductSrch"   Style="{StaticResource MaterialDesignFloatingHintTextBox}"  HorizontalAlignment="Left" Margin="33,10,0,0" VerticalAlignment="Top" Width="147" RenderTransformOrigin="0.509,8.955"  TextChanged="cmbProductSrch_TextChanged" Height="40"   >
             <materialDesign:HintAssist.Hint>
@@ -25,7 +26,7 @@
                 </StackPanel>
             </materialDesign:HintAssist.Hint>
         </TextBox>
-        <DataGrid x:Name="dgvProduct" HorizontalAlignment="Center" BorderThickness="2" VerticalAlignment="Center" Height="336" Width="404"  CanUserSortColumns="True"  AutoGenerateColumns="False" BorderBrush="Black" Background="White" Foreground="Black" Margin="19,55,19,28" MouseDoubleClick="dgvProduct_MouseDoubleClick" >
+        <DataGrid x:Name="dgvProduct" HorizontalAlignment="Center" BorderThickness="2" BorderBrush="Black" VerticalAlignment="Center" Height="336" Width="404"  CanUserSortColumns="True"  AutoGenerateColumns="False" Background="White" Foreground="Black" Margin="19,55,19,28" MouseDoubleClick="dgvProduct_MouseDoubleClick" >
             <DataGrid.ColumnHeaderStyle>
                 <Style TargetType="{x:Type DataGridColumnHeader}">
                     <Setter Property="FontWeight" Value="Bold" />

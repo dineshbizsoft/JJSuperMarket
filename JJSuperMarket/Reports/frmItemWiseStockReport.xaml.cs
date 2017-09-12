@@ -29,10 +29,11 @@ namespace JJSuperMarket.Reports
     {
        JJSuperMarketEntities db = new JJSuperMarketEntities();
         List<Product> lstProduct = new List<Product>();
+        decimal GId;
         public frmItemWiseStockReport()
         {
             InitializeComponent();
-            dtpFromDate.SelectedDate = DateTime.Today.AddDays (-30);
+            dtpFromDate.SelectedDate = DateTime.Today.AddDays (-1);
             dtpToDate.SelectedDate = DateTime.Today;
            
         }
@@ -43,23 +44,28 @@ namespace JJSuperMarket.Reports
         }
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
-            
-                LoadReport();
+            GId = db.StockGroups.Where(x => x.GroupName.ToLower() == cmbGroupUnder.Text.ToLower()).Select(x => x.StockGroupId).FirstOrDefault();
+            LoadReport();
             txtProductNAme.Clear();
             cmbItemName.Text = "";
             txtItemCode.Clear();
+            cmbGroupUnder.Text = "";
         }
         private void LoadReport()
         {
+            if (cmbGroupUnder.Text == "")
+            {
+                dgvStockDetails.ItemsSource = StockDetails.GetStockDetails(cmbItemName.Text, dtpFromDate.SelectedDate, dtpToDate.SelectedDate);
+            }
+            if (cmbGroupUnder.Text != null)
+            {
+                dgvStockDetails.ItemsSource = StockDetails.GetStockDetails(cmbItemName.Text, dtpFromDate.SelectedDate, dtpToDate.SelectedDate, cmbGroupUnder.Text == "" ? 0 : GId);
+            }
             if (!string.IsNullOrEmpty(txtProductNAme.Text))
             {
                 dgvStockDetails.ItemsSource = StockDetails.GetStockDetails(txtProductNAme.Text, dtpFromDate.SelectedDate, dtpToDate.SelectedDate);
             }
-            else
-            {
-                dgvStockDetails.ItemsSource = StockDetails.GetStockDetails(cmbItemName.Text, dtpFromDate.SelectedDate, dtpToDate.SelectedDate);
-            }
-           
+
         }
 
         private void cmbItemName_TextChanged(object sender, RoutedEventArgs e)
@@ -85,7 +91,7 @@ namespace JJSuperMarket.Reports
              
             cmbItemName.ItemsSource = lstProduct.ToList();
 
-            LoadReport();
+           // LoadReport();
         }
 
         private async  void txtItemCode_KeyDown(object sender, KeyEventArgs e)
@@ -138,6 +144,13 @@ namespace JJSuperMarket.Reports
         private void txtProductNAme_TextChanged(object sender, TextChangedEventArgs e)
         {
            
+        }
+
+        private void cmbGroupUnder_DropDownOpened(object sender, EventArgs e)
+        {
+            cmbGroupUnder.ItemsSource = db.StockGroups.ToList();
+            cmbGroupUnder.DisplayMemberPath = "GroupName";
+            cmbGroupUnder.SelectedValuePath = "StockGroupId";
         }
     }
 }

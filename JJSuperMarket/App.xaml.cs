@@ -15,6 +15,9 @@ namespace JJSuperMarket
     public partial class App : Application
     {
         static System.IO.StreamWriter file = new System.IO.StreamWriter(System.Windows.Forms.Application.StartupPath + "\\test.txt", true);
+        public static frmHome frmHome;
+        public static frmUserHome frmUserHome;
+
 
         void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
@@ -23,7 +26,7 @@ namespace JJSuperMarket
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             App.LogWriter("App Started");
-            Window frm = new frmLogin();
+            Window frm = new frmLogin(); 
             frm.Show();
         }
 

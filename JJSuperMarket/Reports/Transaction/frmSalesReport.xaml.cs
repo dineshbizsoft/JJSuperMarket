@@ -64,10 +64,20 @@ namespace JJSuperMarket.Reports.Transaction
                 ReportDataSource Data = new ReportDataSource("Sales", dt);
 
                 SalesReport.LocalReport.DataSources.Add(Data);
-                SalesReport.LocalReport.ReportEmbeddedResource = "JJSuperMarketReports.Transaction.rptSales.rdlc";
+                SalesReport.LocalReport.ReportEmbeddedResource = "JJSuperMarket.Reports.Transaction.rptSales.rdlc";
                 SalesReport.LocalReport.SubreportProcessing += new SubreportProcessingEventHandler(PurchaseDetails);
 
                 SalesReport.RefreshReport();
+
+
+                OverAllReport.Reset();
+                DataTable dt1 = getOverAllData();
+                ReportDataSource Data1 = new ReportDataSource("SalesReport", dt1);
+
+                OverAllReport.LocalReport.DataSources.Add(Data1);
+                OverAllReport.LocalReport.ReportEmbeddedResource = "JJSuperMarket.Reports.Transaction.rptOverAllSalesReport.rdlc";
+               
+                OverAllReport.RefreshReport();
             }
             catch (Exception ex)
             {
@@ -111,7 +121,21 @@ namespace JJSuperMarket.Reports.Transaction
             return dt;
 
         }
+        private DataTable getOverAllData()
+        {
+            Wqry1();
+            DataTable dt = new DataTable();
+            using (SqlConnection con = new SqlConnection(AppLib.conStr))
+            {
+                SqlCommand cmd;
+                string qry1 = string.Format("select c.CustomerName as CustomerName ,c.MobileNo as PhoneNumber ,SUM(s.ItemAmount) as Amount from Sales as S join Customer as C on c.CustomerId = S.LedgerCode where {0} Group by CustomerName, c.MobileNo order by CustomerName", qry);
+                cmd = new SqlCommand(qry1, con);
+                SqlDataAdapter adp = new SqlDataAdapter(cmd);
+                adp.Fill(dt);
+            }
+            return dt;
 
+        }
         public string Wqry()
         {
             DateTime fromDate = Convert.ToDateTime(dtpFromDate.SelectedDate);
@@ -137,7 +161,16 @@ namespace JJSuperMarket.Reports.Transaction
             return qry;
         }
 
-        
+        public string Wqry1()
+        {
+            DateTime fromDate = Convert.ToDateTime(dtpFromDate.SelectedDate);
+            DateTime toDate = Convert.ToDateTime(dtpToDate.SelectedDate);
+            Double billFrom = Convert.ToDouble(txtBillAmtFrom.Text);
+            Double billTo = Convert.ToDouble(txtBillAmtTo.Text);
+            qry = String.Format("S.SalesDate>='{0:yyyy-MM-dd}' and S.SalesDate<='{1:yyyy-MM-dd}' and S.ItemAmount>='{2}' and S.ItemAmount<='{3}'", fromDate, toDate, billFrom, billTo);
+            
+            return qry;
+        }
 
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {

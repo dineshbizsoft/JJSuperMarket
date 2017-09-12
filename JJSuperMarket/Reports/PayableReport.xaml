@@ -15,10 +15,10 @@
                     <ColumnDefinition Width="50*"/>
                     <ColumnDefinition Width="50*"/>
                 </Grid.ColumnDefinitions>
-                <GroupBox x:Name="grbSupplier" Header="Supplier" Grid.Column="0">
+                <GroupBox x:Name="grbSupplier" Header="Supplier[ Purchase Report ]" Grid.Column="0">
                     <DataGrid x:Name="dgvPayableSupplier" />
                 </GroupBox>
-                <GroupBox x:Name="grbCustomer" Header="Customoer" Grid.Column="1">
+                <GroupBox x:Name="grbCustomer" Header="Customoer[ Sales Return Report ] " Grid.Column="1">
                     <DataGrid x:Name="dgvPayableCustomer"/>
                 </GroupBox>
             </Grid>

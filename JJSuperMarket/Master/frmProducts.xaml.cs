@@ -29,7 +29,7 @@ namespace JJSuperMarket.MasterSetup
     {
         JJSuperMarketEntities db = new JJSuperMarketEntities();
         decimal ID = 0;
-        
+
 
         public frmProducts()
         {
@@ -64,13 +64,13 @@ namespace JJSuperMarket.MasterSetup
                     {
                         ImageSource imageSource = new BitmapImage(new Uri(sFileName));
 
-                    //    iProductImage.Source = imageSource;
-                    //    iProductImage.Tag = AppLib.ReadImageFile(sFileName);
+                        //    iProductImage.Source = imageSource;
+                        //    iProductImage.Tag = AppLib.ReadImageFile(sFileName);
                     }
 
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             { }
         }
 
@@ -108,6 +108,16 @@ namespace JJSuperMarket.MasterSetup
                     var sampleMessageDialog = new SampleMessageDialog
                     {
                         Message = { Text = "Enter UOM.." }
+                    };
+
+                    await DialogHost.Show(sampleMessageDialog, "RootDialog");
+                    txtBarcode.Focus();
+                }
+                else if (cmbUnder.Text == "")
+                {
+                    var sampleMessageDialog = new SampleMessageDialog
+                    {
+                        Message = { Text = "Enter Under category.." }
                     };
 
                     await DialogHost.Show(sampleMessageDialog, "RootDialog");
@@ -156,28 +166,28 @@ namespace JJSuperMarket.MasterSetup
                         }
 
                     }
-                      if (txtBarcode.Text != name1)
+                    if (txtBarcode.Text != name1)
                     {
                         if (await validation() == false)
                         {
                             r = false;
                         }
                     }
-                    
-                   if (r == true)
+
+                    if (r == true)
                     {
                         Product c = db.Products.Where(x => x.ProductId == ID).FirstOrDefault();
-                         
+
                         c.ProductName = txtProductName.Text;
                         c.PurchaseRate = (txtPurchaseRate.Text.ToString() == "" ? 0 : Convert.ToDouble(txtPurchaseRate.Text.ToString()));
                         c.SellingRate = (txtSellingRate.Text.ToString() == "" ? 0 : Convert.ToDouble(txtSellingRate.Text.ToString()));
                         c.UOMCode = (cmbUOM.Text == "" ? 0 : Convert.ToDecimal(cmbUOM.SelectedValue));
-                        c.GroupCode = 1;
+                        c.GroupCode = cmbUnder.Text == "" ? 0 : (Convert.ToDecimal(cmbUnder.SelectedValue));
                         c.ItemCode = txtBarcode.Text;
-                        c.MRP  = txtMRP.Text == "" ?0 : Convert.ToDouble(txtMRP .Text);
+                        c.MRP = txtMRP.Text == "" ? 0 : Convert.ToDouble(txtMRP.Text);
                         c.OpQty = (txtOpeningStock.Text.ToString() == "" ? 0 : Convert.ToDouble(txtOpeningStock.Text.ToString()));
                         c.ReOrderLevel = (txtReorderLevel.Text.ToString() == "" ? 0 : Convert.ToDouble(txtReorderLevel.Text.ToString()));
-                       // c.ProductImage = (iProductImage.Tag == null ? null : (byte[])iProductImage.Tag);
+                        // c.ProductImage = (iProductImage.Tag == null ? null : (byte[])iProductImage.Tag);
 
                         db.SaveChanges();
                         var sampleMessageDialog = new SampleMessageDialog
@@ -204,12 +214,12 @@ namespace JJSuperMarket.MasterSetup
                         c.PurchaseRate = (txtPurchaseRate.Text.ToString() == "" ? 0 : Convert.ToDouble(txtPurchaseRate.Text.ToString()));
                         c.SellingRate = (txtSellingRate.Text.ToString() == "" ? 0 : Convert.ToDouble(txtSellingRate.Text.ToString()));
                         c.UOMCode = (cmbUOM.SelectedValue.ToString() == "" ? 0 : Convert.ToDecimal(cmbUOM.SelectedValue));
-                        c.GroupCode = 1;
+                        c.GroupCode = cmbUnder.Text == "" ? 0 : (Convert.ToDecimal(cmbUnder.SelectedValue));
                         c.ItemCode = txtBarcode.Text;
-                        c.MRP  =txtMRP.Text == "" ? 0 :Convert.ToDouble( txtMRP .Text);
+                        c.MRP = txtMRP.Text == "" ? 0 : Convert.ToDouble(txtMRP.Text);
                         c.OpQty = (txtOpeningStock.Text.ToString() == "" ? 0 : Convert.ToDouble(txtOpeningStock.Text.ToString()));
                         c.ReOrderLevel = (txtReorderLevel.Text.ToString() == "" ? 0 : Convert.ToDouble(txtReorderLevel.Text.ToString()));
-                      //  c.ProductImage = (iProductImage.Tag == null ? null : (byte[])iProductImage.Tag);
+                        //  c.ProductImage = (iProductImage.Tag == null ? null : (byte[])iProductImage.Tag);
 
 
                         db.Products.Add(c);
@@ -227,7 +237,7 @@ namespace JJSuperMarket.MasterSetup
                 }
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 //todo
             }
@@ -237,7 +247,7 @@ namespace JJSuperMarket.MasterSetup
         {
             FormClear();
         }
-       
+
         private async void btnDelete_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -277,7 +287,7 @@ namespace JJSuperMarket.MasterSetup
                 }
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(" Can't Delete Contact Admin..");
                 db = new JJSuperMarketEntities();
@@ -308,15 +318,15 @@ namespace JJSuperMarket.MasterSetup
                 txtPurchaseRate.Text = c.PurchaseRate.ToString();
                 txtSellingRate.Text = c.SellingRate.ToString();
                 cmbUOM.Text = c.UnitsOfMeasurement.UOMSymbol;
-               // cmbGroupName.Text = c.StockGroup.GroupName;
+                cmbUnder.Text = c.StockGroup.GroupName;
                 txtBarcode.Text = c.ItemCode;
-                txtMRP .Text = c.MRP.ToString();
+                txtMRP.Text = c.MRP.ToString();
                 txtOpeningStock.Text = c.OpQty.ToString();
                 txtReorderLevel.Text = c.ReOrderLevel.ToString();
-              //  iProductImage.Source = AppLib.ViewImage(c.ProductImage);
-               // iProductImage.Tag = c.ProductImage;
+                //  iProductImage.Source = AppLib.ViewImage(c.ProductImage);
+                // iProductImage.Tag = c.ProductImage;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }
@@ -327,11 +337,11 @@ namespace JJSuperMarket.MasterSetup
         private async Task<bool> validation()
         {
 
-            
-            var item = db.Products.Where(x => x.ProductName  == txtProductName.Text).FirstOrDefault();
-            if (item != null )
+
+            var item = db.Products.Where(x => x.ProductName == txtProductName.Text).FirstOrDefault();
+            if (item != null)
             {
-                if( item.ProductId != ID  )
+                if (item.ProductId != ID)
                 {
                     var sampleMessageDialog = new SampleMessageDialog
                     {
@@ -352,7 +362,7 @@ namespace JJSuperMarket.MasterSetup
                 {
                     var sampleMessageDialog = new SampleMessageDialog
                     {
-                        Message = { Text = "This Barcode assign to " + item.ProductName+ ". Enter New Bar Code " }
+                        Message = { Text = "This Barcode assign to " + item.ProductName + ". Enter New Bar Code " }
                     };
 
                     await DialogHost.Show(sampleMessageDialog, "RootDialog");
@@ -370,38 +380,40 @@ namespace JJSuperMarket.MasterSetup
             txtProductName.Clear();
             txtSellingRate.Clear();
             txtPurchaseRate.Clear();
-            txtMRP .Clear();
+            txtMRP.Clear();
             txtBarcode.Clear();
             txtItem.Clear();
             cmbProductSrch.Clear();
             cmbUOM.Text = "";
-           // cmbGroupName.Text = "";
+            cmbUnder.Text = "";
             txtOpeningStock.Clear();
             txtReorderLevel.Clear();
-           // iProductImage.Source = null;
+            // iProductImage.Source = null;
             ID = 0;
         }
         private void LoadWindow()
         {
             try
             {
-                
                 var c1 = db.UnitsOfMeasurements.ToList();
                 cmbUOM.ItemsSource = c1;
                 cmbUOM.SelectedValuePath = "UOMId";
                 cmbUOM.DisplayMemberPath = "UOMSymbol";
 
-               
                 if (cmbProductSrch.Text != "")
                 {
-                    dgvProduct.ItemsSource = db.Products.Where(x => x.ProductName == cmbProductSrch.Text).OrderByDescending(x=>x.ProductId).ToList();
+                    var p = db.Products.Where(x => x.ProductName == cmbProductSrch.Text).OrderByDescending(x => x.ProductId).ToList();
+                    foreach (var p1 in p)
+                    {
+
+                    }
                 }
                 else
                 {
                     dgvProduct.ItemsSource = db.Products.OrderByDescending(x => x.ProductId).ToList();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             { }
         }
         private void LoadReport()
@@ -429,71 +441,73 @@ namespace JJSuperMarket.MasterSetup
             using (SqlConnection con = new SqlConnection(AppLib.conStr))
             {
                 SqlCommand cmd;
-                
-                    string qry = string.Format(" select p.ProductName,p.ItemCode,p.PurchaseRate,p.SellingRate,p.mrp  From Products as P left join StockGroups as s on p.GroupCode=s.GroupCode order by ProductName");
-                    cmd = new SqlCommand(qry, con);
-                    SqlDataAdapter adp = new SqlDataAdapter(cmd);
-                    adp.Fill(dt);
-                
+
+                string qry = string.Format(" select p.ProductName,p.ItemCode,p.PurchaseRate,p.SellingRate,p.mrp  From Products as P left join StockGroups as s on p.GroupCode=s.GroupCode order by ProductName");
+                cmd = new SqlCommand(qry, con);
+                SqlDataAdapter adp = new SqlDataAdapter(cmd);
+                adp.Fill(dt);
+
 
             }
             return dt;
         }
 
-
+        private void cmbUnder_DropDownOpened(object sender, EventArgs e)
+        {
+            var U = db.StockGroups.OrderBy(x => x.GroupName).ToList();
+            cmbUnder.ItemsSource = U;
+            cmbUnder.SelectedValuePath = "StockGroupId";
+            cmbUnder.DisplayMemberPath = "GroupName";
+        }
 
 
         #endregion
 
-        
+
 
         private void txtItem_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                dgvProduct.ItemsSource = db.Products.Where(x => x.ItemCode == txtItem.Text).ToList();   
+                dgvProduct.ItemsSource = db.Products.Where(x => x.ItemCode == txtItem.Text).ToList();
             }
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-          //  lstProduct = db.Products.OrderBy(x => x.ProductName).ToList();
+            //  lstProduct = db.Products.OrderBy(x => x.ProductName).ToList();
             LoadReport();
-            
+
         }
 
         private void cmbProductSrch_TextChanged(object sender, TextChangedEventArgs e)
         {
             txtItem.Clear();
-            if(!string.IsNullOrWhiteSpace(cmbProductSrch.Text))
+            if (!string.IsNullOrWhiteSpace(cmbProductSrch.Text))
             {
-                dgvProduct.ItemsSource = db.Products.Where(x => x.ProductName.ToLower().Contains(cmbProductSrch.Text.ToLower())).OrderBy(x=>x.ProductName).ToList();
+                dgvProduct.ItemsSource = db.Products.Where(x => x.ProductName.ToLower().Contains(cmbProductSrch.Text.ToLower())).OrderBy(x => x.ProductName).ToList();
             }
             else
             {
                 dgvProduct.ItemsSource = db.Products.ToList();
             }
-            
+
         }
 
         private void txtItem_TextChanged(object sender, TextChangedEventArgs e)
         {
             cmbProductSrch.Clear();
-            if(string.IsNullOrEmpty(txtItem.Text))
+            if (string.IsNullOrEmpty(txtItem.Text))
             {
-                dgvProduct.ItemsSource = db.Products.ToList().OrderBy(x=>x.ProductName);
-            }    
+                dgvProduct.ItemsSource = db.Products.ToList().OrderBy(x => x.ProductName);
+            }
 
         }
     }
 }
-//namespace JJSuperMarket
-//{
-//    public partial class Product
-//    {
-//        public override string ToString()
-//        {
-//            return this.ProductName;
-//        }
-//    }
-//}
+public class ProductDetails
+{
+    public string SNo { get; set; }
+    public string ProductName { get; set; }
+    public string Under { get; set; }
+}

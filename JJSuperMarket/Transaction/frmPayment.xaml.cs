@@ -100,7 +100,7 @@ namespace JJSuperMarket.Transaction
                             var Pay = db.PaymentMasters.Where(x => x.SupplierId == supl.Supplier.SupplierId).ToList();
 
                             SupplierDueReport c1 = new SupplierDueReport();
-                            c1.SupplierName = supl.Supplier.SupplierName;
+                            c1.LedgerName = supl.Supplier.LedgerName;
                             // c1.DueDate = String.Format("{0:dd-MM-yyyy}", (cust.Date.Value == null ? DateTime.Today : cust.Date.Value.AddDays(cust.Supplier.CreditDays == null ? 0 : (double)cust.Supplier.CreditDays.Value)));
 
                             c1.Amount = Convert.ToDecimal(string.Format("{0:N2}", supl.ItemAmount.Value));
@@ -109,6 +109,24 @@ namespace JJSuperMarket.Transaction
 
                             c1.Date = string.Format("{0:dd-MM-yyyy}", supl.PurchaseDate);
                             c1.PInvoiceNo = String.Format("PINV {0}", supl.InvoiceNo);
+                            //c1.IsOverdue = (DateTime.Now - cust.Date.Value.AddDays((double)(cust.Supplier.CreditDays == null ? 0 : cust.Supplier.CreditDays.Value))).TotalDays > 0; ;
+                            if (c1.Balance > 0) Suplist.Add(c1);
+
+                        }
+                        foreach (var s1 in db.PurchaseMasters.Where(x => x.LedgerCode == sup.SupplierId && x.PurchaseType == "Credit").ToList())
+                        {
+                            var Pay = db.PaymentMasters.Where(x => x.SupplierId == s1.Supplier.SupplierId).ToList();
+
+                            SupplierDueReport c1 = new SupplierDueReport();
+                            c1.LedgerName = s1.Supplier.LedgerName;
+                            // c1.DueDate = String.Format("{0:dd-MM-yyyy}", (cust.Date.Value == null ? DateTime.Today : cust.Date.Value.AddDays(cust.Supplier.CreditDays == null ? 0 : (double)cust.Supplier.CreditDays.Value)));
+
+                            c1.Amount = Convert.ToDecimal(string.Format("{0:N2}", s1.ItemAmount.Value));
+                            c1.PaidAmount = Pay == null ? 0 : Convert.ToDecimal(string.Format("{0:N2}", Pay.Where(x => x.PurchaseId == s1.InvoiceNo).Sum(x => x.PayAmount).Value));
+                            c1.Balance = Convert.ToDecimal(string.Format("{0:N2}", c1.Amount - c1.PaidAmount));
+
+                            c1.Date = string.Format("{0:dd-MM-yyyy}", s1.PurchaseDate);
+                            c1.PInvoiceNo = String.Format("PINV {0}", s1.InvoiceNo);
                             //c1.IsOverdue = (DateTime.Now - cust.Date.Value.AddDays((double)(cust.Supplier.CreditDays == null ? 0 : cust.Supplier.CreditDays.Value))).TotalDays > 0; ;
                             if (c1.Balance > 0) Suplist.Add(c1);
 
@@ -172,7 +190,7 @@ namespace JJSuperMarket.Transaction
                         SuplierPayList s1 = new SuplierPayList();
                         s1.Id = pay.PaymentId;
                         s1.Date = pay.PaymentDate.Value;
-                        s1.Name = sup.SupplierName;
+                        s1.Name = sup.LedgerName;
                         s1.Amount = (decimal)pay.PayAmount;
                         s1.Description = pay.Description;
                         splist.Add(s1);
@@ -415,8 +433,8 @@ namespace JJSuperMarket.Transaction
                 var cid = db.Customers.Where(x => x.CustomerName == cmbCompanySrch.Text).FirstOrDefault();
                 if (cid != null) dgvCustomer.ItemsSource = db.PaymentMasters.Where(x => x.CustomerId == cid.CustomerId).Select(x => new { Id = x.PaymentId, Date = x.PaymentDate, Name = cid.CustomerName, Amount = x.PayAmount, Description = x.Description }).ToList();
 
-                var sid = db.Suppliers.Where(x => x.SupplierName == cmbCompanySrch.Text).FirstOrDefault();
-                if (sid != null) dgvCustomer.ItemsSource = db.PaymentMasters.Where(x => x.SupplierId == sid.SupplierId).Select(x => new { Id = x.PaymentId, Date = x.PaymentDate, Name = sid.SupplierName, Amount = x.PayAmount, Description = x.Description }).ToList();
+                var sid = db.Suppliers.Where(x => x.LedgerName == cmbCompanySrch.Text).FirstOrDefault();
+                if (sid != null) dgvCustomer.ItemsSource = db.PaymentMasters.Where(x => x.SupplierId == sid.SupplierId).Select(x => new { Id = x.PaymentId, Date = x.PaymentDate, Name = sid.LedgerName, Amount = x.PayAmount, Description = x.Description }).ToList();
 
 
             }
@@ -564,10 +582,10 @@ namespace JJSuperMarket.Transaction
             {
                 var v = db.Suppliers.ToList();
                 cmbNameDr.ItemsSource = v;
-                cmbNameDr.DisplayMemberPath = "SupplierName";
+                cmbNameDr.DisplayMemberPath = "LedgerName";
                 cmbNameDr.SelectedValuePath = "SupplierId";
 
-                //cmbNameDr.ItemsSource = db.Suppliers.Select(x => x.SupplierName).ToList();
+                //cmbNameDr.ItemsSource = db.Suppliers.Select(x => x.LedgerName).ToList();
             }
         }
 
@@ -659,9 +677,9 @@ namespace JJSuperMarket.Transaction
             {
                 var v = db.Suppliers.ToList();
                 cmbCompanySrch.ItemsSource = v;
-                cmbCompanySrch.DisplayMemberPath = "SupplierName";
+                cmbCompanySrch.DisplayMemberPath = "LedgerName";
                 cmbCompanySrch.SelectedValuePath = "SupplierId";
-                // cmbCompanySrch.ItemsSource = db.Suppliers.Select(x => x.SupplierName).ToList();
+                // cmbCompanySrch.ItemsSource = db.Suppliers.Select(x => x.LedgerName).ToList();
             }
         }
         private void rbtSupplierMaster_Click_1(object sender, RoutedEventArgs e)
@@ -689,7 +707,7 @@ namespace JJSuperMarket.Transaction
     {
         public string PInvoiceNo { get; set; }
         public string Date { get; set; }
-        public string SupplierName { get; set; }
+        public string LedgerName { get; set; }
         public decimal Amount { get; set; }
         public decimal PaidAmount { get; set; }
         public decimal Balance { get; set; }

@@ -59,6 +59,7 @@
                             </DataGrid.ColumnHeaderStyle>
 
                             <DataGrid.Columns>
+                                <DataGridTextColumn Header="SNO" Width="50" Binding="{Binding SNo}" IsReadOnly="True"  EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"/>
                                 <DataGridTextColumn Header="Id" Width="50" Binding="{Binding ''}" Visibility="Hidden" IsReadOnly="True"  EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"/>
                                 <DataGridTextColumn Header="Item Name" FontWeight="Bold" Width="300" Binding="{Binding ProductName}" IsReadOnly="True"  EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"/>
                                 <DataGridTextColumn Header="UOM" FontWeight="Bold" Width="50" Binding="{Binding UOMSymbol}" IsReadOnly="True"  EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"/>
@@ -104,8 +105,8 @@
                         <Button Width="80" Height="30" x:Name="btnDelete" Content="DELETE"   Margin="5 5" Click="btnDelete_Click" />
                         <Button Width="80" Height="30" x:Name="btnClear" Content="CLEAR" Margin="5 5" Click="btnClear_Click" />
                         <Button Width="80" Height="30" x:Name="btnView" Content="VIEW"  Margin="5 5" Click="btnView_Click"/>
-                        <Button Width="87" Height="30" x:Name="btnSearch" Content="SEARCH"   Margin="5 5"  Click="btnSearch_Click"/>
-                         
+                        <Button Width="87" Height="30" x:Name="btnSearch" Content="SEARCH"   Margin="5,10,5,0"  Click="btnSearch_Click" VerticalAlignment="Top"/>
+
                     </StackPanel>
                 </Grid>
                 <TextBox Visibility="Hidden"  x:Name="txtAvailStk" FontWeight="Bold" IsReadOnly="True" FontSize="14" materialDesign:TransitionAssist.DisableTransitions="True" Margin="1125,3,-225,332"  Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:HintAssist.Hint="Stock Availability" RenderTransformOrigin="0.5,0.5" Grid.Row="1"/>

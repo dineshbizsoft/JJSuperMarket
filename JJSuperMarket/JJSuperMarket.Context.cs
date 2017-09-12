@@ -65,5 +65,6 @@ namespace JJSuperMarket
         public virtual DbSet<SoftValidation> SoftValidations { get; set; }
         public virtual DbSet<TextTranslation> TextTranslations { get; set; }
         public virtual DbSet<TmpProduct> TmpProducts { get; set; }
+        public virtual DbSet<PurchaseMaster> PurchaseMasters { get; set; }
     }
 }

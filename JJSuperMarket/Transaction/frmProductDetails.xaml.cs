@@ -12,13 +12,14 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using MahApps.Metro.Controls;
 
 namespace JJSuperMarket.Transaction
 {
     /// <summary>
     /// Interaction logic for frmProductDetails.xaml
     /// </summary>
-    public partial class frmProductDetails : Window
+    public partial class frmProductDetails :Window
     {
         List<Product> lstProduct = new List<Product>();
         JJSuperMarketEntities db = new JJSuperMarketEntities();

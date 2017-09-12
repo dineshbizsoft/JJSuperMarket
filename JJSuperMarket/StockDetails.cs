@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -28,7 +29,7 @@ namespace JJSuperMarket
             toList = GetStockDetails();
         }
 
-        public static ObservableCollection<StockDetails> GetStockDetails(String ProductName = null, DateTime? dtFrom = null, DateTime? dtTo = null)
+        public static ObservableCollection<StockDetails> GetStockDetails(String ProductName = null, DateTime? dtFrom = null, DateTime? dtTo = null, decimal Group = 0)
         {
             //db = new JJSuperMarketEntities(); // Update data automatically
             JJSuperMarketEntities db = new JJSuperMarketEntities();
@@ -37,6 +38,12 @@ namespace JJSuperMarket
             if (!string.IsNullOrEmpty(ProductName))
             {
                 lstproduct = lstproduct.Where(x => x.ProductName.ToLower().Contains(ProductName.ToLower())).ToList();
+            }
+            if (Group != null)
+            {
+                if (Group != 0)
+
+                    lstproduct = lstproduct.Where(x => x.GroupCode == Group).ToList();
             }
             if (dtFrom == null)
             {
@@ -80,5 +87,7 @@ namespace JJSuperMarket
             }
             return list;
         }
+
+        
     }
 }

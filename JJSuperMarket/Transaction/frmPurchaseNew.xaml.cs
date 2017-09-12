@@ -291,7 +291,7 @@ namespace JJSuperMarket.Transaction
         }
 
         private void btnView_Click(object sender, RoutedEventArgs e)
-        {//Todo
+        {
            Reports.Transaction.frmPurchaseReport  frm = new  Reports.Transaction.frmPurchaseReport();
             frm.ShowDialog();
         }
@@ -328,6 +328,7 @@ namespace JJSuperMarket.Transaction
 
                     tbd.ProductCode = Pro.ProductId;
                     //tbd.SDId = Convert.ToInt16(ID);
+                    tbd.SNo = lstPurchase.Count;
 
                     tbd.Rate = txtMRP.Text == "0" ? 0 : Convert.ToDouble(txtMRP.Text.ToString());
                     tbd.Quantity = txtQty.Text == "" ? 1 : Convert.ToDouble(txtQty.Text.ToString());
@@ -410,13 +411,9 @@ namespace JJSuperMarket.Transaction
                 //txtDiscount.Text = string.Format("{0:N2}", lstSalesDetails.Sum(x => x.DisPer));
                 double dis = Convert.ToDouble(txtTotItemAmount.Text.ToString());
 
-
                 txtDiscount.Text = "0";
                 txtTotal.Text = string.Format("{0:N2}", dis);
                 txtRound.Text = string.Format("{0:N2}", Math.Round(dis,MidpointRounding.AwayFromZero ));
-
-
-
 
                 int test;
                 test = Convert.ToInt32(dis);
@@ -430,11 +427,9 @@ namespace JJSuperMarket.Transaction
 
         private void LoadWindow()
         {
-
-
-            var v = db.Suppliers.Where(x => !string.IsNullOrEmpty(x.SupplierName)).OrderBy(x => x.SupplierName).ToList();
+            var v = db.Suppliers.Where(x => !string.IsNullOrEmpty(x.SupplierName)).OrderBy(x => x.LedgerName).ToList();
             cmbSupplier.ItemsSource = v;
-            cmbSupplier.DisplayMemberPath = "SupplierName";
+            cmbSupplier.DisplayMemberPath = "LedgerName";
             cmbSupplier.SelectedValuePath = "SupplierId";
 
             var m = db.Suppliers.Where(x => !string.IsNullOrEmpty(x.MobileNo)).OrderBy(x => x.MobileNo).ToList();
@@ -523,12 +518,13 @@ namespace JJSuperMarket.Transaction
 
 
                 lstPurchase.Clear();
-
+                int s = 0;
                 foreach (var data in p.PurchaseDetails.ToList())
                 {
                     ItemsDetails i = new ItemsDetails();
                     i.DisPer = data.DisPer == 0 ? (double)data.Rate : Convert.ToDouble(data.DisPer);
-                    i.UOMSymbol = data.UnitsOfMeasurement.UOMSymbol;
+                    s = s + 1;
+                    i.SNo = s; i.UOMSymbol = data.UnitsOfMeasurement.UOMSymbol;
                     i.Itemcode = data.Product.ItemCode;
                     i.ProductName = data.Product.ProductName;
                     i.Rate = Convert.ToDouble(data.Rate);
@@ -745,8 +741,10 @@ namespace JJSuperMarket.Transaction
             private double _Amount;
             private double _Total;
             private string _Itemcode;
+            private int _SNo;
 
 
+            public int SNo { get { return _SNo; } set { if (_SNo != value) { _SNo = value; NotifyPropertyChanged("SNo"); } } }
 
             public int PDId { get { return _PDId; } set { if (_PDId != value) { _PDId = value; NotifyPropertyChanged("PDId"); } } }
 
