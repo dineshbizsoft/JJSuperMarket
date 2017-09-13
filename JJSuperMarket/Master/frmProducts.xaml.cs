@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using JJSuperMarket;
 using JJSuperMarket.Domain;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Reporting.WinForms;
@@ -312,7 +313,7 @@ namespace JJSuperMarket.MasterSetup
         {
             try
             {
-                Product c = dgvProduct.SelectedItem as Product;
+                ProductDetails c = dgvProduct.SelectedItem as ProductDetails;
                 ID = c.ProductId;
                 txtProductName.Text = c.ProductName;
                 txtPurchaseRate.Text = c.PurchaseRate.ToString();
@@ -399,19 +400,8 @@ namespace JJSuperMarket.MasterSetup
                 cmbUOM.ItemsSource = c1;
                 cmbUOM.SelectedValuePath = "UOMId";
                 cmbUOM.DisplayMemberPath = "UOMSymbol";
-
-                if (cmbProductSrch.Text != "")
-                {
-                    var p = db.Products.Where(x => x.ProductName == cmbProductSrch.Text).OrderByDescending(x => x.ProductId).ToList();
-                    foreach (var p1 in p)
-                    {
-
-                    }
-                }
-                else
-                {
-                    dgvProduct.ItemsSource = db.Products.OrderByDescending(x => x.ProductId).ToList();
-                }
+                var p = db.Products.ToList();
+                Product_Search(p);
             }
             catch (Exception ex)
             { }
@@ -460,17 +450,50 @@ namespace JJSuperMarket.MasterSetup
             cmbUnder.DisplayMemberPath = "GroupName";
         }
 
-
         #endregion
-
-
-
         private void txtItem_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                dgvProduct.ItemsSource = db.Products.Where(x => x.ItemCode == txtItem.Text).ToList();
+                ProductList_ItemCodeSrch();
             }
+        }
+
+        private void ProductList_ItemCodeSrch()
+        {
+            var p = db.Products.Where(x => x.ItemCode == txtItem.Text).ToList();
+            Product_Search(p);
+
+        }
+
+        private void Product_Search(List<Product> p)
+        {
+            ProductDetails pc = new ProductDetails();
+            List<ProductDetails> p1 = new List<ProductDetails>();
+            var pr = p;
+            int n = 0;
+            foreach (var p2 in pr)
+            {
+                pc = new ProductDetails();
+                pc.ProductName = p2.ProductName;
+                n = n + 1;
+                pc.SNo = n;
+                pc.Under = p2.StockGroup.GroupName;
+                pc.PurchaseRate = p2.PurchaseRate.Value;
+                pc.SellingRate = p2.SellingRate.Value;
+                pc.MRP = p2.MRP.Value;
+                pc.GroupCode = p2.GroupCode;
+                pc.ItemCode = p2.ItemCode;
+                pc.OpQty = p2.OpQty;
+                pc.ProductCode = p2.ProductCode;
+                pc.ProductId = p2.ProductId;
+                pc.ReOrderLevel = p2.ReOrderLevel;
+                pc.Under = p2.StockGroup.GroupName;
+                pc.UOMCode = p2.UOMCode; p1.Add(pc);
+                pc.StockGroup = p2.StockGroup;
+                pc.UnitsOfMeasurement = p2.UnitsOfMeasurement;
+            }
+            dgvProduct.ItemsSource = p1;
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -483,14 +506,22 @@ namespace JJSuperMarket.MasterSetup
         private void cmbProductSrch_TextChanged(object sender, TextChangedEventArgs e)
         {
             txtItem.Clear();
+            ProductList_NameSrch();
+        }
+
+        private void ProductList_NameSrch()
+        {
+            var p = db.Products.ToList();
             if (!string.IsNullOrWhiteSpace(cmbProductSrch.Text))
             {
-                dgvProduct.ItemsSource = db.Products.Where(x => x.ProductName.ToLower().Contains(cmbProductSrch.Text.ToLower())).OrderBy(x => x.ProductName).ToList();
+                p = db.Products.Where(x => x.ProductName.ToLower().Contains(cmbProductSrch.Text.ToLower())).OrderBy(x => x.ProductName).ToList();
             }
             else
             {
-                dgvProduct.ItemsSource = db.Products.ToList();
+                p = db.Products.ToList();
             }
+
+            Product_Search(p);
 
         }
 
@@ -499,7 +530,9 @@ namespace JJSuperMarket.MasterSetup
             cmbProductSrch.Clear();
             if (string.IsNullOrEmpty(txtItem.Text))
             {
-                dgvProduct.ItemsSource = db.Products.ToList().OrderBy(x => x.ProductName);
+                var p = db.Products.Where(x => x.ProductName.Contains(txtItem.Text)).OrderBy(x => x.ProductName).ToList();
+                Product_Search(p);
+
             }
 
         }
@@ -507,7 +540,23 @@ namespace JJSuperMarket.MasterSetup
 }
 public class ProductDetails
 {
-    public string SNo { get; set; }
+    public int SNo { get; set; }
     public string ProductName { get; set; }
     public string Under { get; set; }
+    public double SellingRate { get; set; }
+    public double PurchaseRate { get; set; }
+    public double MRP { get; set; }
+    public decimal ProductId { get; set; }
+    public string ProductCode { get; set; }
+
+    public string ItemCode { get; set; }
+    public Nullable<decimal> GroupCode { get; set; }
+
+    public Nullable<decimal> UOMCode { get; set; }
+    public Nullable<double> ReOrderLevel { get; set; }
+    public Nullable<double> OpQty { get; set; }
+    public byte[] ProductImage { get; set; }
+
+    public StockGroup StockGroup { get; set; }
+    public UnitsOfMeasurement UnitsOfMeasurement { get; set; }
 }

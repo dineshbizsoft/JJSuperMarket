@@ -25,6 +25,7 @@ namespace JJSuperMarket.Reports.Transaction
     public partial class frmSalesReport : UserControl 
     {
         string qry = "";
+        string qry1 = "";
         JJSuperMarketEntities db = new JJSuperMarketEntities();
 
         public frmSalesReport()
@@ -128,8 +129,8 @@ namespace JJSuperMarket.Reports.Transaction
             using (SqlConnection con = new SqlConnection(AppLib.conStr))
             {
                 SqlCommand cmd;
-                string qry1 = string.Format("select c.CustomerName as CustomerName ,c.MobileNo as PhoneNumber ,SUM(s.ItemAmount) as Amount from Sales as S join Customer as C on c.CustomerId = S.LedgerCode where {0} Group by CustomerName, c.MobileNo order by CustomerName", qry);
-                cmd = new SqlCommand(qry1, con);
+                string Sqry1 = string.Format("select c.CustomerName as CustomerName ,c.MobileNo as PhoneNumber ,SUM(s.ItemAmount) as Amount from Sales as S join Customer as C on c.CustomerId = S.LedgerCode where {0} Group by CustomerName, c.MobileNo order by CustomerName", qry1);
+                cmd = new SqlCommand(Sqry1, con);
                 SqlDataAdapter adp = new SqlDataAdapter(cmd);
                 adp.Fill(dt);
             }
@@ -167,9 +168,9 @@ namespace JJSuperMarket.Reports.Transaction
             DateTime toDate = Convert.ToDateTime(dtpToDate.SelectedDate);
             Double billFrom = Convert.ToDouble(txtBillAmtFrom.Text);
             Double billTo = Convert.ToDouble(txtBillAmtTo.Text);
-            qry = String.Format("S.SalesDate>='{0:yyyy-MM-dd}' and S.SalesDate<='{1:yyyy-MM-dd}' and S.ItemAmount>='{2}' and S.ItemAmount<='{3}'", fromDate, toDate, billFrom, billTo);
+            qry1 = String.Format("S.SalesDate>='{0:yyyy-MM-dd}' and S.SalesDate<='{1:yyyy-MM-dd}' and S.ItemAmount>='{2}' and S.ItemAmount<='{3}'", fromDate, toDate, billFrom, billTo);
             
-            return qry;
+            return qry1;
         }
 
         private void btnSearch_Click(object sender, RoutedEventArgs e)

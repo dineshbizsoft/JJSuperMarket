@@ -35,7 +35,7 @@
             </DataGrid.ColumnHeaderStyle>
              
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Id" Width="1" Binding="{Binding ProductId}" Visibility="Hidden" IsReadOnly="True"  EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"/>
+                <DataGridTextColumn Header="SNo." Width="50" Binding="{Binding SNo}"  IsReadOnly="True"  EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"/>
                 <DataGridTextColumn Header="Product Name" FontWeight="Bold" Width="270" Binding="{Binding ProductName}" IsReadOnly="True"  EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"/>
                 <DataGridTextColumn Header="Selling Rate" FontWeight="Bold" Width="*" Binding="{Binding SellingRate}" IsReadOnly="True"  EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"/>
 

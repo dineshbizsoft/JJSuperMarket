@@ -86,7 +86,8 @@ namespace JJSuperMarket.Transaction
                 double tot, paid;
                 tot = Convert.ToDouble(txtRound.Text);
                 paid = Convert.ToDouble(txtPaidAmount.Text == "" ? "0.00" : txtPaidAmount.Text);
-                if (cmbSupplier.Text == "")
+                var d = cmbSupplier.SelectedItem as Supplier;
+                if (d.SupplierId != 0)
                 {
                     var Information = new SampleMessageDialog
                     {
@@ -151,7 +152,7 @@ namespace JJSuperMarket.Transaction
                     p.InvoiceNo = Convert.ToDecimal(txtInNo.Text.ToString());
 
                     // p.LedgerCode = Convert.ToDecimal(cmbCustomer.SelectedValue.ToString());
-                    p.LedgerCode = db.Suppliers.Where(x => x.SupplierName == cmbSupplier.Text).Select(x => x.SupplierId).FirstOrDefault();
+                    p.LedgerCode = db.Suppliers.Where(x => x.SupplierId==d.SupplierId).Select(x => x.SupplierId).FirstOrDefault();
                     p.Narration = txtPaidAmount.Text;
                     p.PurchaseDate = dtpS.SelectedDate;
                     p.ItemAmount = Convert.ToDouble(txtTotal.Text.ToString());

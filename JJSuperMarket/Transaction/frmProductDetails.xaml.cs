@@ -40,7 +40,25 @@ namespace JJSuperMarket.Transaction
         {
             if (!string.IsNullOrWhiteSpace(cmbProductSrch.Text))
             {
-                dgvProduct.ItemsSource = lstProduct.Where(x => x.ProductName.ToLower().Contains(cmbProductSrch.Text.ToLower())).ToList();
+                
+                var p = lstProduct.Where(x => x.ProductName.ToLower().Contains(cmbProductSrch.Text.ToLower())).ToList();
+                ProductDetails pc = new ProductDetails();
+                List<ProductDetails> p1 = new List<ProductDetails>();
+                int n = 0;
+                foreach (var p2 in p)
+                {
+                    pc = new ProductDetails();
+                    pc.ProductName = p2.ProductName;
+                    n = n + 1;
+                    pc.SNo = n;
+                    pc.Under = p2.StockGroup.GroupName;
+                    pc.PurchaseRate = p2.PurchaseRate.Value;
+                    pc.SellingRate = p2.SellingRate.Value;
+                    pc.MRP = p2.MRP.Value;
+
+                    p1.Add(pc);
+                }
+                dgvProduct.ItemsSource = p1;
             }
         }
 
@@ -48,9 +66,9 @@ namespace JJSuperMarket.Transaction
         {
             try
             {
-                Product  p = dgvProduct .SelectedItem as Product ;
+                ProductDetails  p = dgvProduct .SelectedItem as ProductDetails;
 
-               ProName  = p.ProductName;
+                ProName  = p.ProductName;
                 this.Close();
             }
             catch (Exception ex)
@@ -62,22 +80,73 @@ namespace JJSuperMarket.Transaction
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             txtItem.Focus();
-            dgvProduct.ItemsSource = lstProduct.ToList();
+            ProductDetails pc = new ProductDetails();
+            List<ProductDetails> p1 = new List<ProductDetails>();
+            int n = 0;
+            foreach (var p2 in lstProduct.ToList())
+            {
+                pc = new ProductDetails();
+                pc.ProductName = p2.ProductName;
+                n = n + 1;
+                pc.SNo = n;
+                pc.Under = p2.StockGroup.GroupName;
+                pc.PurchaseRate = p2.PurchaseRate.Value;
+                pc.SellingRate = p2.SellingRate.Value;
+                pc.MRP = p2.MRP.Value;
+
+                p1.Add(pc);
+            }
+            dgvProduct.ItemsSource = p1; 
         }
 
         private void txtItem_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                dgvProduct.ItemsSource = db.Products.Where(x => x.ItemCode == txtItem.Text).ToList();
+            
+                var p = db.Products.Where(x => x.ItemCode == txtItem.Text).ToList();
+                ProductDetails pc = new ProductDetails();
+                List<ProductDetails> p1 = new List<ProductDetails>();
+                int n = 0;
+                foreach (var p2 in p)
+                {
+                    pc = new ProductDetails();
+                    pc.ProductName = p2.ProductName;
+                    n = n + 1;
+                    pc.SNo = n;
+                    pc.Under = p2.StockGroup.GroupName;
+                    pc.PurchaseRate = p2.PurchaseRate.Value;
+                    pc.SellingRate = p2.SellingRate.Value;
+                    pc.MRP = p2.MRP.Value;
+
+                    p1.Add(pc);
+                }
+                dgvProduct.ItemsSource = p1;
             }
         }
 
         private void txtItem_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (string.IsNullOrEmpty(txtItem.Text))
-            {
-                dgvProduct.ItemsSource = lstProduct.ToList();
+           {
+                 var p = lstProduct.ToList();
+                ProductDetails pc = new ProductDetails();
+                List<ProductDetails> p1 = new List<ProductDetails>();
+                int n = 0;
+                foreach (var p2 in p)
+                {
+                    pc = new ProductDetails();
+                    pc.ProductName = p2.ProductName;
+                    n = n + 1;
+                    pc.SNo = n;
+                    pc.Under = p2.StockGroup.GroupName;
+                    pc.PurchaseRate = p2.PurchaseRate.Value;
+                    pc.SellingRate = p2.SellingRate.Value;
+                    pc.MRP = p2.MRP.Value;
+
+                    p1.Add(pc);
+                }
+                dgvProduct.ItemsSource = p1;
             }
         }
     }
