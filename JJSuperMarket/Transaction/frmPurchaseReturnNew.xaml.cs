@@ -143,7 +143,7 @@ namespace JJSuperMarket.Transaction
                     p.InvoiceNo = Convert.ToDecimal(txtInNo.Text.ToString());
 
                     // p.LedgerCode = Convert.ToDecimal(cmbCustomer.SelectedValue.ToString());
-                    p.LedgerCode = db.Suppliers.Where(x => x.SupplierName == cmbSupplier.Text).Select(x => x.SupplierId).FirstOrDefault();
+                    p.LedgerCode = db.Suppliers.Where(x => x.LedgerName == cmbSupplier.Text).Select(x => x.SupplierId).FirstOrDefault();
                     p.Narration = txtPaidAmount.Text;
                     p.PRDate = dtpS.SelectedDate;
                     p.ItemAmount = Convert.ToDouble(txtTotal.Text.ToString());
@@ -424,9 +424,9 @@ namespace JJSuperMarket.Transaction
         {
 
 
-            var v = db.Suppliers.Where(x => !string.IsNullOrEmpty(x.SupplierName)).OrderBy(x => x.SupplierName).ToList();
+            var v = db.Suppliers.Where(x => !string.IsNullOrEmpty(x.LedgerName)).OrderBy(x => x.LedgerName).ToList();
             cmbSupplier.ItemsSource = v;
-            cmbSupplier.DisplayMemberPath = "SupplierName";
+            cmbSupplier.DisplayMemberPath = "LedgerName";
             cmbSupplier.SelectedValuePath = "SupplierId";
 
             var m = db.Suppliers.Where(x => !string.IsNullOrEmpty(x.MobileNo)).OrderBy(x => x.MobileNo).ToList();
@@ -512,7 +512,7 @@ namespace JJSuperMarket.Transaction
                 txtPaidAmount.Text = p.Narration;
                 txtDiscount.Text = p.DiscountAmount.ToString();
                 txtExtras.Text = p.Extra.ToString();
-                cmbSupplier.Text = p.Supplier.SupplierName;
+                cmbSupplier.Text = p.Supplier.LedgerName;
 
 
                 lstPurchaseReturn.Clear();
@@ -955,7 +955,7 @@ namespace JJSuperMarket.Transaction
                 txtPaidAmount.Text = p.Narration;
                 txtDiscount.Text = p.DiscountAmount.ToString();
                 txtExtras.Text = p.Extra.ToString();
-                cmbSupplier.Text = p.Supplier.SupplierName;
+                cmbSupplier.Text = p.Supplier.LedgerName;
 
 
                 lstPurchaseReturn.Clear();

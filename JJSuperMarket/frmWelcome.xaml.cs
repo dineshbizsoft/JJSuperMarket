@@ -190,34 +190,27 @@ namespace JJSuperMarket
             lblPMonth.Content = string.Format("{0}", startDate.ToString("MMMM"));
             for (int i=0;i<=n;i++)
             {
-                double? sAmt = 0, pAmt = 0, Total = 0;
+                double? sAmt = 0, pAmt1 = 0,pAmt2=0,TPAmt=0, Total = 0;
                 np = new NetProfit();
                 np.Date = string.Format("{0:dd/MM/yyyy}", startDate.AddDays(i).Date);
                 DateTime dtFrom = startDate.AddDays(i);
-                pAmt = db.Purchases.Where(x => x.PurchaseDate==dtFrom).Sum(x => x.ItemAmount);
-                if(pAmt!=null)
-                {
-                    pAmt += db.PurchaseMasters.Where(x => x.PurchaseDate == dtFrom).Sum(x => x.ItemAmount);
-                }
-                else
-                {
-                    pAmt = db.PurchaseMasters.Where(x => x.PurchaseDate == dtFrom).Sum(x => x.ItemAmount);
-
-                }
-                np.PurRate = pAmt == null ? 0 : (double)pAmt;
+                pAmt1 = db.Purchases.Where(x => x.PurchaseDate==dtFrom).Sum(x => x.ItemAmount)==null?0: db.Purchases.Where(x => x.PurchaseDate == dtFrom).Sum(x => x.ItemAmount);
+                 pAmt2= db.PurchaseMasters.Where(x => x.PurchaseDate == dtFrom).Sum(x => x.ItemAmount)==null?0: db.PurchaseMasters.Where(x => x.PurchaseDate == dtFrom).Sum(x => x.ItemAmount);                
+                TPAmt = pAmt1 + pAmt2;
+                np.PurRate = TPAmt == null ? 0 : (double)TPAmt;
                 sAmt = db.Sales.Where(x => x.SalesDate == dtFrom).Sum(x => x.ItemAmount);
-                np.SalRate = sAmt == null ? 0 : (double)sAmt;
-                if (np.PurRate != 0 || np.SalRate != 0)
+                np.SelRate = sAmt == null ? 0 : (double)sAmt;
+                if (np.PurRate != 0 || np.SelRate != 0)
                 {
-                  np.Profit = (np.PurRate) - (np.SalRate);
-                  listNp.Add(np);
+                  np.Profit =  (np.SelRate)- (np.PurRate);
+                    listNp.Add(np);
                 }
                 
             }
             np = new NetProfit();
-            np.Date = "";
-            np.PurRate =null;
-            np.SalRate = null;
+            np.Date = "Total";
+            np.PurRate =listNp.Sum(x=>x.PurRate);
+            np.SelRate = listNp.Sum(x=>x.SelRate);
             np.Profit = listNp.Sum(x=>x.Profit);
             listNp.Add(np);
 
@@ -230,7 +223,7 @@ namespace JJSuperMarket
         {
             public string Date { get; set; }
             public double? PurRate { get; set; }
-            public double? SalRate { get; set; }
+            public double? SelRate { get; set; }
             public double? Profit { get; set; }
         }
 
