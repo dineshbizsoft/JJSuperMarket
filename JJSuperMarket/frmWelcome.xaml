@@ -9,30 +9,35 @@
              mc:Ignorable="d" 
              Loaded="UserControl_Loaded"
              xmlns:ctrl ="clr-namespace:JJSuperMarket"
-             d:DesignHeight="700" d:DesignWidth="1200" >
+             d:DesignHeight="750" d:DesignWidth="1200" >
 
     <Grid  >
-        <Grid.ColumnDefinitions >
-            <ColumnDefinition Width ="auto" />
-
-
-        </Grid.ColumnDefinitions>
+       
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="50*"/>
+            <RowDefinition Height="50*"/>
         </Grid.RowDefinitions>
-        <GroupBox Margin="24,9,826,391" Width="350" Height="300" FontWeight="Bold"  Header="Datewise Monthly Sales Report">
-            <Grid>
-               <DataGrid Name="SalesGrid" CanUserSortColumns="False"/>
-            </Grid>
-        </GroupBox>
-        <!--<GroupBox Margin="422,9,428,391" Width="350" Height="300" Foreground="Gray" FontWeight="Bold" Header="ItemWise Sales Report">
-            <DataGrid Name="StockGrid"/>
-        </GroupBox>-->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" >
+            <GroupBox  Width="350" Height="280" FontWeight="Bold"  Header="Datewise Monthly Sales Report" Margin="10">
+                <Grid>
+                    <DataGrid Name="SalesGrid" CanUserSortColumns="False"/>
+                </Grid>
+            </GroupBox>
+            <GroupBox Width="350" Height="280" FontWeight="Bold"  Foreground="Gray" Header="Top 10 Customer Details" Margin="10">
+                <DataGrid Name="dgvCustomerInfo"/>
+            </GroupBox>
+            <GroupBox  Width="350" Height="280" FontWeight="Bold" Margin="10" >
+                <GroupBox.Header>
+                    <StackPanel Orientation="Horizontal"  >
+                        <DatePicker x:Name="dtpDate"  Margin="10" Width="100" SelectedDateChanged="dtpDate_SelectedDateChanged" />
+                        <Label x:Name="lblName" Margin="10" />
+                    </StackPanel>
+                </GroupBox.Header>
+                <DataGrid Name="dgvSaleInfo" CanUserSortColumns="False"></DataGrid>
 
-        <GroupBox Margin="422,9,428,391" Width="350" FontWeight="Bold" Height="300" Foreground="Gray" Header="Top 10 Customer Details">
-            <DataGrid Name="dgvCustomerInfo"/>
-        </GroupBox>
-        <StackPanel Margin="24,329,30,71" Orientation="Horizontal" HorizontalAlignment="Center">
+            </GroupBox>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" >
             <!--<GroupBox  Width="350" Height="280" FontWeight="Bold" Header="salesChart">
                 <chartingToolkit:Chart  Name="BarChart1" Title="Sales Report" >
                     <chartingToolkit:PieSeries   DependentValuePath="Value"
@@ -40,7 +45,7 @@
             IsSelectionEnabled="True" />
                 </chartingToolkit:Chart>
             </GroupBox>-->
-            <GroupBox Margin="50,10,10,10" Width="350" Height="280" FontWeight="Bold" >
+            <GroupBox Margin="10" Width="350" Height="280" FontWeight="Bold" >
                 <GroupBox.Header>
                     <StackPanel Orientation="Horizontal"  >
 
@@ -51,25 +56,25 @@
                 </GroupBox.Header>
                 <DataGrid Name="dgvCatagorWiseSales"></DataGrid>
             </GroupBox>
-            <GroupBox Margin="50,10,10,10" Width="350" Height="280" FontWeight="Bold" >
+            <GroupBox Margin="10" Width="350" Height="280" FontWeight="Bold" >
                 <GroupBox.Header>
                     <StackPanel Orientation="Horizontal"  >
                         <Label  Content="Sales Report" Margin="10" />
-                        <DatePicker x:Name="dtpSTDate"  Margin="5" Width="100" SelectedDateChanged="dtpSTDate_SelectedDateChanged" />
-                        <Label x:Name="lblMonth" Margin="5"></Label>
+                        <ComboBox x:Name="cmbMonths" SelectionChanged="cmbMonths_SelectionChanged" Width="200" Margin="10"></ComboBox>
+                       
                     </StackPanel>
                 </GroupBox.Header>
                 <DataGrid Name="dgvSalesTypeWiseReport" CanUserSortColumns="False"></DataGrid>
             </GroupBox>
-            <GroupBox Margin="50,10,10,10" Width="350" Height="280" FontWeight="Bold" >
+            <GroupBox Margin="10" Width="350" Height="280" FontWeight="Bold" >
                 <GroupBox.Header>
                     <StackPanel Orientation="Horizontal"  >
-                        <Label  Content="Sales Report" Margin="10" />
-                        <DatePicker x:Name="dtpPDate"  Margin="5" Width="100" SelectedDateChanged="dtpPDate_SelectedDateChanged" />
-                        <Label x:Name="lblPMonth" Margin="5"></Label>
+                        <Label  Content="Net Report" Margin="10" />
+                        <ComboBox x:Name="cmbNPMonths" SelectionChanged="cmbNPMonths_SelectionChanged" Width="200" Margin="10"></ComboBox>
+
                     </StackPanel>
                 </GroupBox.Header>
-                <DataGrid Name="dgvProfitReport" CanUserSortColumns="False"></DataGrid>
+                <DataGrid Name="dgvProfitReport" CanUserSortColumns="False" ></DataGrid>
             </GroupBox>
 
         </StackPanel>
@@ -80,15 +85,6 @@
             IsSelectionEnabled="True" />
             </chartingToolkit:Chart>
         </GroupBox>-->
-         <GroupBox  Width="350" Height="300" FontWeight="Bold" Margin="800,10,10,390">
-            <GroupBox.Header>
-                <StackPanel Orientation="Horizontal"  >
-                    <DatePicker x:Name="dtpDate"  Margin="10" Width="100" SelectedDateChanged="dtpDate_SelectedDateChanged" />
-                    <Label x:Name="lblName" Margin="10" />
-                </StackPanel>
-            </GroupBox.Header>
-            <DataGrid Name="dgvSaleInfo" CanUserSortColumns="False"></DataGrid>
-            
-        </GroupBox>
+    
     </Grid>
 </UserControl>

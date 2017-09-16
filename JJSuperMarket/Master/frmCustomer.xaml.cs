@@ -249,7 +249,7 @@ namespace JJSuperMarket.MasterSetup
         {
             try
             {
-                Customer c = dgvCustomer.SelectedItem as Customer;
+                CustomerDetail c = dgvCustomer.SelectedItem as CustomerDetail;
                 ID = c.CustomerId;
                 txtPersonIncharge.Text = c.CustomerName;
                 txtCompanyName.Text = c.LedgerName;
@@ -300,7 +300,7 @@ namespace JJSuperMarket.MasterSetup
         {
             try
             {
-                dgvCustomer.ItemsSource = db.Customers.OrderBy(x => x.CustomerName).ToList();
+                Customer_Search( db.Customers.OrderBy(x => x.CustomerName).ToList());
                 LoadReport();
             }
             catch (Exception ex)
@@ -385,16 +385,64 @@ namespace JJSuperMarket.MasterSetup
         {
             if (!string.IsNullOrWhiteSpace(txtCustomerSearch.Text))
             {
-                dgvCustomer.ItemsSource = db.Customers.Where(x => x.CustomerName.ToLower().Contains(txtCustomerSearch.Text.ToLower())).OrderBy(x => x.CustomerId).ToList();
+                var p = db.Customers.Where(x => x.CustomerName.ToLower().Contains(txtCustomerSearch.Text.ToLower())).OrderBy(x => x.CustomerId).ToList();
+                Customer_Search(p);
             }
             else
             {
-                dgvCustomer.ItemsSource = db.Customers.ToList();
+                Customer_Search( db.Customers.ToList());
             }
         }
 
         private void txtCompanyName_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
+
+        }
+
+        private void Customer_Search(List<Customer> p)
+        {
+            CustomerDetail pc = new CustomerDetail();
+            List<CustomerDetail> p1 = new List<CustomerDetail>();
+            var pr = p;
+            int n = 0;
+            foreach (var p2 in pr)
+            {
+                pc = new CustomerDetail();
+                pc.CustomerId = p2.CustomerId;
+                n = n + 1;
+                pc.SNo = n;
+                pc.CustomerName = p2.CustomerName;
+                pc.AddressLine = p2.AddressLine;
+                pc.CreditDays = p2.CreditDays;
+                pc.CreditLimits = p2.CreditLimits;
+                pc.CST = p2.CST;
+                pc.CustomerCode = p2.CustomerCode;
+                pc.EMailId = p2.EMailId;
+                pc.LedgerName = p2.LedgerName;
+                pc.MobileNo = p2.MobileNo;
+                pc.TelePhoneNo = p2.TelePhoneNo;
+                pc.TinNo = p2.TinNo;
+               
+            }
+            dgvCustomer.ItemsSource = p1;
+        }
+
+
+        public class CustomerDetail
+        {
+            public int SNo { get; set; }
+            public decimal CustomerId { get; set; }
+            public string CustomerCode { get; set; }
+            public string LedgerName { get; set; }
+            public string CustomerName { get; set; }
+            public string AddressLine { get; set; }
+            public string TelePhoneNo { get; set; }
+            public string MobileNo { get; set; }
+            public string EMailId { get; set; }
+            public string CST { get; set; }
+            public string TinNo { get; set; }
+            public Nullable<decimal> CreditDays { get; set; }
+            public Nullable<double> CreditLimits { get; set; }
 
         }
     }

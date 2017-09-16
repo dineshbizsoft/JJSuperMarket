@@ -184,7 +184,7 @@ namespace JJSuperMarket.MasterSetup
             }
             catch (Exception ex)
             {
-                
+
             }
         }
         private void btnClear_Click(object sender, RoutedEventArgs e)
@@ -223,12 +223,12 @@ namespace JJSuperMarket.MasterSetup
                     if (result == true)
                     {
                         Ledger l = db.Ledgers.Where(x => x.BillingName == txtCompanyName.Text.ToString()).FirstOrDefault();
-                        if(l!=null)
+                        if (l != null)
                         {
                             db.Ledgers.Remove(l);
                             db.SaveChanges();
                         }
-                       
+
 
                         Supplier c = db.Suppliers.Where(x => x.SupplierId == ID).FirstOrDefault();
                         db.Suppliers.Remove(c);
@@ -260,7 +260,7 @@ namespace JJSuperMarket.MasterSetup
         {
             try
             {
-                Supplier c = dgvSupplier.SelectedItem as Supplier;
+                SupplierDetail c = dgvSupplier.SelectedItem as SupplierDetail;
                 ID = c.SupplierId;
                 txtPersonIncharge.Text = c.SupplierName;
                 txtCompanyName.Text = c.LedgerName;
@@ -332,7 +332,7 @@ namespace JJSuperMarket.MasterSetup
         {
             try
             {
-                dgvSupplier.ItemsSource = db.Suppliers.ToList();
+                Supplier_Search(db.Suppliers.ToList());
             }
             catch (Exception ex)
             {
@@ -366,40 +366,83 @@ namespace JJSuperMarket.MasterSetup
             using (SqlConnection con = new SqlConnection(AppLib.conStr))
             {
                 SqlCommand cmd;
-               
-                 
-                    string qry = string.Format("Select * from Supplier  order by LedgerName");
-                    cmd = new SqlCommand(qry, con);
-                    SqlDataAdapter adp = new SqlDataAdapter(cmd);
-                    adp.Fill(dt);
-                 
+
+
+                string qry = string.Format("Select * from Supplier  order by LedgerName");
+                cmd = new SqlCommand(qry, con);
+                SqlDataAdapter adp = new SqlDataAdapter(cmd);
+                adp.Fill(dt);
+
 
 
             }
             return dt;
         }
-        
+
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             LoadReport();
         }
 
-       
+
         private void txtSupplierSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(txtSupplierSearch .Text))
+            if (!string.IsNullOrWhiteSpace(txtSupplierSearch.Text))
             {
-                dgvSupplier.ItemsSource = db.Suppliers.Where(x => x.SupplierName.ToLower().Contains(txtSupplierSearch.Text.ToLower())).OrderBy(x => x.SupplierId).ToList();
+                Supplier_Search(db.Suppliers.Where(x => x.SupplierName.ToLower().Contains(txtSupplierSearch.Text.ToLower())).OrderBy(x => x.SupplierId).ToList());
             }
             else
             {
-                dgvSupplier.ItemsSource = db.Suppliers.ToList();
+                Supplier_Search(db.Suppliers.ToList());
             }
         }
-    }
 
+        private void Supplier_Search(List<Supplier> p)
+        {
+            SupplierDetail pc = new SupplierDetail();
+            List<SupplierDetail> p1 = new List<SupplierDetail>();
+            var pr = p;
+            int n = 0;
+            foreach (var p2 in pr)
+            {
+                pc = new SupplierDetail();
+                pc.SupplierId = p2.SupplierId;
+                n = n + 1;
+                pc.SNo = n;
+                pc.SupplierName = p2.SupplierName;
+                pc.AddressLine = p2.AddressLine;
+                pc.CreditDays = p2.CreditDays;
+                pc.CreditLimits = p2.CreditLimits;
+                pc.CST = p2.CST;
+                pc.SupplierCode = p2.SupplierCode;
+                pc.EMailId = p2.EMailId;
+                pc.LedgerName = p2.LedgerName;
+                pc.MobileNo = p2.MobileNo;
+                pc.TelePhoneNo = p2.TelePhoneNo;
+                pc.TinNo = p2.TinNo;
+
+            }
+            dgvSupplier.ItemsSource = p1;
+        }
+    }
     #endregion
 
-
+    public class SupplierDetail
+    {
+        public int SNo { get; set; }
+        public decimal SupplierId { get; set; }
+        public string SupplierCode { get; set; }
+        public string LedgerName { get; set; }
+        public string SupplierName { get; set; }
+        public string AddressLine { get; set; }
+        public string TelePhoneNo { get; set; }
+        public string MobileNo { get; set; }
+        public string EMailId { get; set; }
+        public string TinNo { get; set; }
+        public string CST { get; set; }
+        public Nullable<decimal> CreditDays { get; set; }
+        public Nullable<double> CreditLimits { get; set; }
+    }
+        
 }
 
