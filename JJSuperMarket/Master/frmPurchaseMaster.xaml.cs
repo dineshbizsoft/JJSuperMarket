@@ -147,7 +147,7 @@ namespace JJSuperMarket.MasterSetup
                     var result = Convert.ToBoolean(await DialogHost.Show(sampleDialog, "RootDialog"));
                     if (result == true)
                     {
-                        var pur = db.Purchases.Where(x => x.PurchaseId == ID).FirstOrDefault();
+                        var pur = db.PurchaseMasters.Where(x => x.Id == ID).FirstOrDefault();
                         var rec = db.PaymentMasters.Where(x => x.PurchaseId == pur.InvoiceNo).Count();
                         if (rec > 0)
                         {

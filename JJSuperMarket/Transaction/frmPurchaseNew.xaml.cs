@@ -87,7 +87,7 @@ namespace JJSuperMarket.Transaction
                 tot = Convert.ToDouble(txtRound.Text);
                 paid = Convert.ToDouble(txtPaidAmount.Text == "" ? "0.00" : txtPaidAmount.Text);
                 var d = cmbSupplier.SelectedItem as Supplier;
-                if (d.SupplierId != 0)
+                if (d.SupplierId == 0)
                 {
                     var Information = new SampleMessageDialog
                     {
