@@ -30,8 +30,6 @@ namespace JJSuperMarket.MasterSetup
         JJSuperMarketEntities db = new JJSuperMarketEntities();
         decimal ID = 0;
 
-
-
         public frmCustomer()
         {
             InitializeComponent();
@@ -39,7 +37,7 @@ namespace JJSuperMarket.MasterSetup
             LoadReport();
         }
 
-        //Button Events
+        #region Button Events
         private async void btnSave_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -267,8 +265,9 @@ namespace JJSuperMarket.MasterSetup
             }
         }
 
-
-        //User Defined
+        #endregion
+     
+        #region Methods
         private async Task<bool> validation()
         {
 
@@ -300,7 +299,7 @@ namespace JJSuperMarket.MasterSetup
         {
             try
             {
-                Customer_Search( db.Customers.OrderBy(x => x.CustomerName).ToList());
+                Customer_Search(db.Customers.OrderBy(x => x.CustomerName).ToList());
                 LoadReport();
             }
             catch (Exception ex)
@@ -363,42 +362,6 @@ namespace JJSuperMarket.MasterSetup
             return dt;
 
         }
-
-        //Accepts only numbers
-        private void txtCreditDays_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            e.Handled = !IsTextAllowed(e.Text);
-        }
-        private static bool IsTextAllowed(string text)
-        {
-            Regex regex = new Regex("[^0-9.-]+"); //regex that matches disallowed text
-            return !regex.IsMatch(text);
-        }
-
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            LoadWindow();
-        }
-
-
-        private void txtCustomerSearch_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (!string.IsNullOrWhiteSpace(txtCustomerSearch.Text))
-            {
-                var p = db.Customers.Where(x => x.CustomerName.ToLower().Contains(txtCustomerSearch.Text.ToLower())).OrderBy(x => x.CustomerId).ToList();
-                Customer_Search(p);
-            }
-            else
-            {
-                Customer_Search( db.Customers.ToList());
-            }
-        }
-
-        private void txtCompanyName_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-
-        }
-
         private void Customer_Search(List<Customer> p)
         {
             CustomerDetail pc = new CustomerDetail();
@@ -422,12 +385,51 @@ namespace JJSuperMarket.MasterSetup
                 pc.MobileNo = p2.MobileNo;
                 pc.TelePhoneNo = p2.TelePhoneNo;
                 pc.TinNo = p2.TinNo;
-               
+                p1.Add(pc);
+
             }
             dgvCustomer.ItemsSource = p1;
         }
 
+        //Accepts only numbers
+        private void txtCreditDays_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !IsTextAllowed(e.Text);
+        }
+        private static bool IsTextAllowed(string text)
+        {
+            Regex regex = new Regex("[^0-9.-]+"); //regex that matches disallowed text
+            return !regex.IsMatch(text);
+        }
 
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            LoadWindow();
+        }
+
+        #endregion
+
+        #region Enents
+        private void txtCustomerSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(txtCustomerSearch.Text))
+            {
+                var p = db.Customers.Where(x => x.CustomerName.ToLower().Contains(txtCustomerSearch.Text.ToLower())).OrderBy(x => x.CustomerId).ToList();
+                Customer_Search(p);
+            }
+            else
+            {
+                Customer_Search( db.Customers.ToList());
+            }
+        }
+
+        private void txtCompanyName_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+
+        }
+        #endregion
+
+        #region Classs
         public class CustomerDetail
         {
             public int SNo { get; set; }
@@ -445,5 +447,6 @@ namespace JJSuperMarket.MasterSetup
             public Nullable<double> CreditLimits { get; set; }
 
         }
+        #endregion
     }
 }

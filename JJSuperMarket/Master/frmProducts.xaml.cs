@@ -31,7 +31,6 @@ namespace JJSuperMarket.MasterSetup
         JJSuperMarketEntities db = new JJSuperMarketEntities();
         decimal ID = 0;
 
-
         public frmProducts()
         {
             InitializeComponent();
@@ -64,11 +63,7 @@ namespace JJSuperMarket.MasterSetup
                     if (!string.IsNullOrEmpty(sFileName))
                     {
                         ImageSource imageSource = new BitmapImage(new Uri(sFileName));
-
-                        //    iProductImage.Source = imageSource;
-                        //    iProductImage.Tag = AppLib.ReadImageFile(sFileName);
                     }
-
                 }
             }
             catch (Exception ex)
@@ -200,14 +195,10 @@ namespace JJSuperMarket.MasterSetup
                         FormClear();
                         LoadWindow();
                         LoadReport();
-
                     }
-
-
                 }
                 else
                 {
-
                     if (await validation() == true)
                     {
                         Product c = new Product();
@@ -221,27 +212,21 @@ namespace JJSuperMarket.MasterSetup
                         c.OpQty = (txtOpeningStock.Text.ToString() == "" ? 0 : Convert.ToDouble(txtOpeningStock.Text.ToString()));
                         c.ReOrderLevel = (txtReorderLevel.Text.ToString() == "" ? 0 : Convert.ToDouble(txtReorderLevel.Text.ToString()));
                         //  c.ProductImage = (iProductImage.Tag == null ? null : (byte[])iProductImage.Tag);
-
-
                         db.Products.Add(c);
                         db.SaveChanges();
                         var sampleMessageDialog = new SampleMessageDialog
                         {
                             Message = { Text = "Saved successfully.." }
                         };
-
                         await DialogHost.Show(sampleMessageDialog, "RootDialog");
                         FormClear();
                         LoadWindow();
                         LoadReport();
                     }
                 }
-
             }
             catch (Exception ex)
-            {
-                //todo
-            }
+            { }
         }
 
         private void btnClear_Click(object sender, RoutedEventArgs e)
@@ -328,17 +313,13 @@ namespace JJSuperMarket.MasterSetup
                 // iProductImage.Tag = c.ProductImage;
             }
             catch (Exception ex)
-            {
-
-            }
+            { }
         }
         #endregion
 
         #region User Define
         private async Task<bool> validation()
         {
-
-
             var item = db.Products.Where(x => x.ProductName == txtProductName.Text).FirstOrDefault();
             if (item != null)
             {
@@ -348,14 +329,11 @@ namespace JJSuperMarket.MasterSetup
                     {
                         Message = { Text = "" + txtProductName.Text + ", Already Exist.Enter New One " }
                     };
-
                     await DialogHost.Show(sampleMessageDialog, "RootDialog");
                     txtProductName.Focus();
-
                     return false;
                 }
             }
-
             item = db.Products.Where(x => x.ItemCode == txtBarcode.Text).FirstOrDefault();
             if (item != null)
             {
@@ -365,14 +343,11 @@ namespace JJSuperMarket.MasterSetup
                     {
                         Message = { Text = "This Barcode assign to " + item.ProductName + ". Enter New Bar Code " }
                     };
-
                     await DialogHost.Show(sampleMessageDialog, "RootDialog");
                     txtBarcode.Focus();
-
                     return false;
                 }
             }
-
             return true;
         }
         private void FormClear()
@@ -441,31 +416,12 @@ namespace JJSuperMarket.MasterSetup
             }
             return dt;
         }
-
-        private void cmbUnder_DropDownOpened(object sender, EventArgs e)
-        {
-            var U = db.StockGroups.OrderBy(x => x.GroupName).ToList();
-            cmbUnder.ItemsSource = U;
-            cmbUnder.SelectedValuePath = "StockGroupId";
-            cmbUnder.DisplayMemberPath = "GroupName";
-        }
-
-        #endregion
-        private void txtItem_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                ProductList_ItemCodeSrch();
-            }
-        }
-
         private void ProductList_ItemCodeSrch()
         {
             var p = db.Products.Where(x => x.ItemCode == txtItem.Text).ToList();
             Product_Search(p);
 
         }
-
         private void Product_Search(List<Product> p)
         {
             ProductDetails pc = new ProductDetails();
@@ -495,20 +451,6 @@ namespace JJSuperMarket.MasterSetup
             }
             dgvProduct.ItemsSource = p1;
         }
-
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            //  lstProduct = db.Products.OrderBy(x => x.ProductName).ToList();
-            LoadReport();
-
-        }
-
-        private void cmbProductSrch_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            txtItem.Clear();
-            ProductList_NameSrch();
-        }
-
         private void ProductList_NameSrch()
         {
             var p = db.Products.ToList();
@@ -525,6 +467,35 @@ namespace JJSuperMarket.MasterSetup
 
         }
 
+        #endregion
+
+        #region Events
+        private void cmbUnder_DropDownOpened(object sender, EventArgs e)
+        {
+            var U = db.StockGroups.OrderBy(x => x.GroupName).ToList();
+            cmbUnder.ItemsSource = U;
+            cmbUnder.SelectedValuePath = "StockGroupId";
+            cmbUnder.DisplayMemberPath = "GroupName";
+        }
+
+        private void txtItem_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                ProductList_ItemCodeSrch();
+            }
+        }
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            //  lstProduct = db.Products.OrderBy(x => x.ProductName).ToList();
+            LoadReport();
+
+        }
+        private void cmbProductSrch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            txtItem.Clear();
+            ProductList_NameSrch();
+        }
         private void txtItem_TextChanged(object sender, TextChangedEventArgs e)
         {
             cmbProductSrch.Clear();
@@ -534,10 +505,11 @@ namespace JJSuperMarket.MasterSetup
                 Product_Search(p);
 
             }
-
         }
+        #endregion      
     }
 }
+
 public class ProductDetails
 {
     public int SNo { get; set; }

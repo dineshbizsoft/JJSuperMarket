@@ -38,13 +38,7 @@
             </GroupBox>
         </StackPanel>
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" >
-            <!--<GroupBox  Width="350" Height="280" FontWeight="Bold" Header="salesChart">
-                <chartingToolkit:Chart  Name="BarChart1" Title="Sales Report" >
-                    <chartingToolkit:PieSeries   DependentValuePath="Value"
-            IndependentValuePath="Key" ItemsSource="{Binding}"
-            IsSelectionEnabled="True" />
-                </chartingToolkit:Chart>
-            </GroupBox>-->
+           
             <GroupBox Margin="10" Width="350" Height="280" FontWeight="Bold" >
                 <GroupBox.Header>
                     <StackPanel Orientation="Horizontal"  >
@@ -60,7 +54,7 @@
                 <GroupBox.Header>
                     <StackPanel Orientation="Horizontal"  >
                         <Label  Content="Sales Report" Margin="10" />
-                        <ComboBox x:Name="cmbMonths" SelectionChanged="cmbMonths_SelectionChanged" Width="200" Margin="10"></ComboBox>
+                        <ComboBox x:Name="cmbMonths" SelectionChanged="cmbMonths_SelectionChanged" Width="200" Margin="5"></ComboBox>
                        
                     </StackPanel>
                 </GroupBox.Header>
@@ -69,8 +63,8 @@
             <GroupBox Margin="10" Width="350" Height="280" FontWeight="Bold" >
                 <GroupBox.Header>
                     <StackPanel Orientation="Horizontal"  >
-                        <Label  Content="Net Report" Margin="10" />
-                        <ComboBox x:Name="cmbNPMonths" SelectionChanged="cmbNPMonths_SelectionChanged" Width="200" Margin="10"></ComboBox>
+                        <Label  Content="Net Profit" Margin="10" />
+                        <ComboBox x:Name="cmbNPMonths" SelectionChanged="cmbNPMonths_SelectionChanged" Width="200" Margin="5"></ComboBox>
 
                     </StackPanel>
                 </GroupBox.Header>
@@ -78,13 +72,6 @@
             </GroupBox>
 
         </StackPanel>
-         <!--<GroupBox Margin="422,329,428,71" Width="350" Height="300" FontWeight="Bold" Header="Stock Chart">
-            <chartingToolkit:Chart  Name="BarChart" Title="Stock Report" >
-                <chartingToolkit:PieSeries   DependentValuePath="Value"
-            IndependentValuePath="Key" ItemsSource="{Binding}"
-            IsSelectionEnabled="True" />
-            </chartingToolkit:Chart>
-        </GroupBox>-->
-    
+      
     </Grid>
 </UserControl>

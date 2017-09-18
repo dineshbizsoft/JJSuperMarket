@@ -175,7 +175,7 @@
                                         <DropShadowEffect/>
                                     </DataGrid.Effect>
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Header="Id" Width="50" Binding="{Binding CustomerId}" Visibility="Hidden" IsReadOnly="True"  EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"/>
+                                        <DataGridTextColumn Header="SNo" Width="50" Binding="{Binding SNo}"  IsReadOnly="True"  EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"/>
                                         <DataGridTextColumn Visibility="Hidden"  Header="Company"  Width="350" Binding="{Binding LedgerName}" IsReadOnly="True"  EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"/>
                                         <DataGridTextColumn Header="Incharge" Width="200" Binding="{Binding CustomerName}" IsReadOnly="True"  EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"/>
                                         <DataGridTextColumn Header="MobileNumber"  Width="200" Binding="{Binding MobileNo}" IsReadOnly="True"  EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"/>

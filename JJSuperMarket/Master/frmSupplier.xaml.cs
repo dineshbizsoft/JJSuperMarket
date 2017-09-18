@@ -420,6 +420,7 @@ namespace JJSuperMarket.MasterSetup
                 pc.MobileNo = p2.MobileNo;
                 pc.TelePhoneNo = p2.TelePhoneNo;
                 pc.TinNo = p2.TinNo;
+                p1.Add(pc);
 
             }
             dgvSupplier.ItemsSource = p1;
