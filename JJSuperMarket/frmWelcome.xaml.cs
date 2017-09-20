@@ -48,12 +48,12 @@ namespace JJSuperMarket
             cmbMonths.ItemsSource = month;
             cmbMonths.DisplayMemberPath = "MonthName";
             cmbMonths.SelectedValuePath = "Value";
-            cmbMonths.SelectedIndex = DateTime.Now.Month;
+            cmbMonths.SelectedIndex = DateTime.Now.AddMonths(-1).Month;
 
             cmbNPMonths.ItemsSource = month;
             cmbNPMonths.DisplayMemberPath = "MonthName";
             cmbNPMonths.SelectedValuePath = "Value";
-            cmbNPMonths.SelectedIndex = DateTime.Now.Month;
+            cmbNPMonths.SelectedIndex = DateTime.Now.AddMonths(-1).Month;
         }
 
         private void LoadWindow()
@@ -69,31 +69,18 @@ namespace JJSuperMarket
                 var list1 = db.Sales.GroupBy(x => x.SalesDate).OrderByDescending(x => x.Key).Take(30).Select(x => new { SalesDate = x.Key, BillAmount = x.Sum(y => y.ItemAmount) }).ToList();
                 SalesGrid.ItemsSource = list1.Where(x => x.BillAmount != null).Select(x => new { Date = string.Format("{0:dd/MM/yyyy}", x.SalesDate), Amount = string.Format("{0:N2}", x.BillAmount) }).ToList();
 
-                //List<KeyValuePair<string, int>> MyValue2 = new List<KeyValuePair<string, int>>();
-                //MyValue2 = list2.Where(x => x.Amount != null).Select(x => new KeyValuePair<string, int>(x.ProductName.Length > 20 ? x.ProductName.Substring(0, 20) : x.ProductName, (int)double.Parse(x.Amount.ToString()))).ToList();
-                //BarChart.DataContext = MyValue2;
-
-                //var salesList = db.SalesDetails.Where(x => x.Sale.SalesDate>=dtFrom &&  x.Sale.SalesDate<=dtTo).GroupBy(x=>x.Product.StockGroup.GroupName).OrderByDescending(x=> (x.Sum(y => y.DisPer * y.Quantity))).ToList();
-                //var salesList1 = db.SalesDetails.Where(x => x.Sale.SalesDate >= dtFrom && x.Sale.SalesDate <= dtTo).GroupBy(x => x.Sale.SalesDate).OrderByDescending(x => (x.Sum(y => y.DisPer * y.Quantity))).ToList();
-                //var s1=salesList1.Select(x => new { Date = string.Format("{0:dd/MM/yyyy}", x.FirstOrDefault().Sale.SalesDate), Category = x.FirstOrDefault().Product.StockGroup.GroupName, Qty = string.Format("{0:N2}", x.Sum(y => y.Quantity)), Amount = string.Format("{0:N2}", (x.Sum(y => y.DisPer * y.Quantity))) }).GroupBy(x=>x.Category).ToList();
-                //dgvCatagorWiseSales.ItemsSource = s1;
-
+           
                 List<CategoryList> lst = new List<CategoryList>();
                 CategoryList c = new CategoryList();
                 var salesList = db.SalesDetails.Where(x => x.Sale.SalesDate >= dtFrom && x.Sale.SalesDate <= dtTo)
-                     .GroupBy(x => x.Sale.SalesDate).
-                     Select(x => new { Date =  x.FirstOrDefault().Sale.SalesDate,
-                         Category = x.FirstOrDefault().Product.StockGroup.GroupName,
-                         Qty =  x.Sum(y => y.Quantity),
-                         Amount =  x.Sum(y => y.DisPer * y.Quantity),
-                         });
+                     .GroupBy(x => new { x.Sale.SalesDate, x.Product.StockGroup.GroupName }).ToList();
                 foreach (var d in salesList)
                 {
                     c = new CategoryList();
-                    c.Date = string.Format("{0:dd/MM/yyyy}", d.Date);
-                    c.Category = d.Category;
-                    c.Qty = string.Format("{0:N2}", d.Qty);
-                    c.Amount = d.Amount==null?0:(decimal)d.Amount;
+                    c.Date = string.Format("{0:dd/MM/yyyy}", d.Key.SalesDate);
+                    c.Category = d.Key.GroupName;
+                    c.Qty = string.Format("{0:N2}", d.Sum(y => y.Quantity));
+                    c.Amount = d.Sum(y => y.DisPer * y.Quantity) == null?0:(decimal)d.Sum(y => y.DisPer * y.Quantity);
 
                     if (c.Amount != null || c.Amount != 0) lst.Add(c);
 
@@ -234,7 +221,7 @@ namespace JJSuperMarket
 
             for (int i = 0; i <= n; i++)
             {
-                double? sAmt = 0, pAmt = 0, Total = 0;
+                double? sAmt = 0, pAmt = 0, Qty = 0;
                 np = new NetProfit();
                 np.Date = string.Format("{0:dd/MM/yyyy}", startDate.AddDays(i).Date);
                 DateTime dtFrom = startDate.AddDays(i);
@@ -248,7 +235,9 @@ namespace JJSuperMarket
                 {
                     double amt = (double)pro.Sum(x => x.Quantity) * pro.Select(x => x.Product.SellingRate).FirstOrDefault().Value;
                     sAmt += amt;
+                    Qty += (double)pro.Sum(x => x.Quantity);
                 }
+                np.Qty = Qty;
                 np.PurRate = pAmt == null ? 0 : (double)pAmt;
                 sAmt = db.Sales.Where(x => x.SalesDate == dtFrom).Sum(x => x.ItemAmount);
                 np.SelRate = sAmt == null ? 0 : (double)sAmt;
@@ -264,6 +253,7 @@ namespace JJSuperMarket
             np.PurRate = null;
             np.SelRate = null;
             np.Profit = listNp.Sum(x => x.Profit);
+            np.Qty = listNp.Sum(x => x.Qty);
             listNp.Add(np);
 
             dgvProfitReport.ItemsSource = listNp;
@@ -277,6 +267,8 @@ namespace JJSuperMarket
             public double? PurRate { get; set; }
             public double? SelRate { get; set; }
             public double? Profit { get; set; }
+            public double? Qty { get; set; }
+
         }
 
         private void dtpSTDate_DisplayModeChanged(object sender, CalendarModeChangedEventArgs e)
