@@ -43,9 +43,9 @@
                 <GroupBox.Header>
                     <StackPanel Orientation="Horizontal"  >
 
-                        <!--<DatePicker x:Name="dtpCDate" Margin="10"  Width="100" SelectedDateChanged="dtpCDate_SelectedDateChanged" />-->
-
+                     
                         <Label  Content="Category Wise Sales" Margin="10" />
+                        <DatePicker x:Name="dtpCDate" Margin="10"  Width="100" SelectedDateChanged="dtpCDate_SelectedDateChanged" />
                     </StackPanel>
                 </GroupBox.Header>
                 <DataGrid Name="dgvCatagorWiseSales"></DataGrid>
